@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystique One - Inicio</title>
+    <!-- Integración de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Variables personalizadas para el tema elegante */
+        .text-gold { color: #D4AF37; }
+        .bg-gold { background-color: #D4AF37; }
+        .border-gold { border-color: #D4AF37; }
+        .hover-bg-gold-dark:hover { background-color: #B5952F; }
+        
+        /* Scrollbar oscuro elegante */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+    </style>
+</head>
+<body class="bg-black text-white font-sans antialiased overflow-x-hidden">
+
+    <!-- ========== NAVBAR GLOBAL (MYSTIQUE ONE) ========== -->
+    <header class="border-b border-gold py-2 px-6 md:px-12 flex justify-between items-center sticky top-0 bg-black/95 backdrop-blur z-50">
+        
+        <!-- LOGO SVG -->
+        <div class="w-72 md:w-80 cursor-pointer hover:opacity-80 transition duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 200" width="100%" height="100%">
+              <defs>
+                <linearGradient id="oro" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FFF2CD" />
+                  <stop offset="50%" stop-color="#D4AF37" />
+                  <stop offset="100%" stop-color="#997A15" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(10, 50)">
+                <polygon points="50,0 100,25 100,75 50,100 0,75 0,25" fill="none" stroke="url(#oro)" stroke-width="4" />
+                <polyline points="0,25 50,50 100,25" fill="none" stroke="url(#oro)" stroke-width="2" opacity="0.7"/>
+                <polyline points="0,75 50,50 100,75" fill="none" stroke="url(#oro)" stroke-width="2" opacity="0.7"/>
+                <line x1="50" y1="0" x2="50" y2="100" stroke="url(#oro)" stroke-width="2" opacity="0.7" />
+              </g>
+              <text x="135" y="115" font-family="Georgia, serif" font-size="52" font-weight="bold" letter-spacing="4">
+                  <tspan fill="url(#oro)">MYSTIQUE </tspan>
+                  <tspan fill="#ffffff">ONE</tspan>
+              </text>
+              <text x="140" y="150" font-family="Arial, sans-serif" font-size="14" font-weight="normal" fill="#A3A3A3" letter-spacing="9">LA CASA DE LA CALIDAD</text>
+            </svg>
+        </div>
+        
+        <!-- Navegación -->
+        <nav class="hidden md:flex space-x-8 text-gold font-medium tracking-wide">
+            <a href="#" class="hover:text-white transition duration-300">Inicio</a>
+            <a href="#" class="hover:text-white transition duration-300">Uñas</a>
+            <a href="#" class="hover:text-white transition duration-300">Barberías</a>
+        </nav>
+        
+        <!-- Botón de Registro -->
+        <div>
+            <button class="bg-gold text-black font-bold py-2 px-6 rounded-sm shadow-[0_0_10px_rgba(212,175,55,0.3)] hover:bg-[#B5952F] hover:shadow-[0_0_15px_rgba(212,175,55,0.5)] transition duration-300 uppercase text-sm tracking-widest">
+                Registrarse
+            </button>
+        </div>
+    </header>
+
+    <!-- ========== CONTENIDO PRINCIPAL ========== -->
+    <main class="container mx-auto px-4 py-16 min-h-screen relative z-10">
+        
+        <!-- Título de Sección -->
+        <div class="text-center mb-16 relative">
+            <!-- Brillo de fondo sutil -->
+            <div class="absolute -inset-10 bg-gold blur-[120px] opacity-10 rounded-full"></div>
+            
+            <h1 class="text-4xl md:text-5xl font-serif text-gold mb-4 uppercase tracking-widest relative z-10">Nuestros Talentos</h1>
+            <div class="h-px w-24 bg-gold mx-auto mb-4 relative z-10"></div>
+            <p class="text-gray-400 font-light tracking-wide relative z-10">Descubre a los mejores profesionales en Matamoros.</p>
+        </div>
+
+        <!-- Contenedor del Grid (Se llenará con JavaScript) -->
+        <div id="contenedor-perfiles" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
+            <!-- Las tarjetas dinámicas se inyectarán aquí -->
+        </div>
+
+    </main>
+
+    <!-- ========== PIE DE PÁGINA ========== -->
+    <footer class="border-t border-[#222] mt-12 py-8 text-center text-gray-500 text-sm">
+        <p>&copy; 2026 Mystique One. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- ========== LÓGICA DINÁMICA (JAVASCRIPT) ========== -->
+    <script>
+        // 1. Base de datos simulada ACTUALIZADA con Davila Studio
+        const perfiles = [
+            {
+                nombre: "Davila Studio",
+                categoria: "Alaciados & Restauración",
+                imagen: "https://images.unsplash.com/photo-1595476108010-b4d1f804b158?auto=format&fit=crop&w=300&h=300&q=80",
+                link: "DavilaStudio.html", // Enlace al nuevo archivo
+                servicios: [
+                    { nombre: "Alaciado Japonés VIP", precio: "$800" },
+                    { nombre: "Keratina Brasileña", precio: "$600" },
+                    { nombre: "Botox Capilar", precio: "$500" }
+                ]
+            },
+            {
+                nombre: "Divas Beauty",
+                categoria: "Uñas y Pestañas",
+                imagen: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=300&h=300&q=80",
+                link: "DivasBeauty.html", 
+                servicios: [
+                    { nombre: "Uñas Acrílicas Básicas", precio: "$250" },
+                    { nombre: "Diseño Escultural", precio: "$350" },
+                    { nombre: "Efecto Espejo", precio: "$300" }
+                ]
+            },
+            {
+                nombre: "The Boss Barber",
+                categoria: "Barbería Premium",
+                imagen: "https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=300&h=300&q=80",
+                link: "#",
+                servicios: [
+                    { nombre: "Corte Clásico", precio: "$200" },
+                    { nombre: "Perfilado de Barba", precio: "$150" },
+                    { nombre: "Paquete VIP", precio: "$300" }
+                ]
+            }
+        ];
+
+        // 2. Referencia al contenedor
+        const contenedor = document.getElementById('contenedor-perfiles');
+
+        // 3. Función para iterar los servicios (muestra los primeros 3)
+        function generarListaServicios(servicios) {
+            return servicios.slice(0, 3).map(servicio => `
+                <li class="flex justify-between items-center border-b border-[#222] pb-2 last:border-0 last:pb-0">
+                    <span class="text-gray-300 font-light text-sm">${servicio.nombre}</span>
+                    <span class="text-gold font-bold text-base font-serif">${servicio.precio}</span>
+                </li>
+            `).join('');
+        }
+
+        // 4. Renderizado de las tarjetas
+        perfiles.forEach(perfil => {
+            const tarjetaHTML = `
+                <div class="bg-[#0a0a0a] rounded-lg p-8 border border-[#222] hover:border-gold/50 transition duration-500 group flex flex-col h-full shadow-2xl relative overflow-hidden">
+                    
+                    <!-- Brillo interno al hover -->
+                    <div class="absolute -inset-24 bg-gold blur-[60px] opacity-0 group-hover:opacity-5 transition duration-700 rounded-full pointer-events-none"></div>
+
+                    <!-- Imagen (Blanco y negro por defecto, color al pasar el cursor) shrink-0 evita que se deforme -->
+                    <div class="w-32 h-32 bg-zinc-900 rounded-full mx-auto mb-6 border-2 border-gold p-1 overflow-hidden shrink-0 relative z-10 shadow-lg">
+                        <img src="${perfil.imagen}" alt="Foto de ${perfil.nombre}" class="w-full h-full object-cover rounded-full group-hover:scale-110 transition duration-500 grayscale group-hover:grayscale-0">
+                    </div>
+                    
+                    <h2 class="text-3xl text-center text-gold font-serif mb-1 relative z-10 tracking-wide">${perfil.nombre}</h2>
+                    <p class="text-center text-xs text-gray-500 mb-6 uppercase tracking-[0.2em] relative z-10 font-medium">${perfil.categoria}</p>
+                    
+                    <div class="border-t border-[#333] pt-6 flex-grow relative z-10">
+                        <h3 class="text-gold font-medium mb-4 uppercase text-sm tracking-wider">Servicios Destacados</h3>
+                        <ul class="space-y-4 text-sm font-light">
+                            ${generarListaServicios(perfil.servicios)}
+                        </ul>
+                    </div>
+                    
+                    <!-- Botón Enlace al Perfil individual -->
+                    <div class="mt-8 text-center shrink-0 relative z-10">
+                        <a href="${perfil.link}" class="block w-full border border-gold/70 text-gold py-3 px-4 rounded-sm hover:bg-gold hover:text-black transition duration-300 font-bold uppercase text-xs tracking-widest text-center shadow-md">
+                            Ver Perfil Completo
+                        </a>
+                    </div>
+                </div>
+            `;
+            contenedor.innerHTML += tarjetaHTML;
+        });
+    </script>
+</body>
+</html>
