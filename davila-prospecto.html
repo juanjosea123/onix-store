@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
             --gold-light: #FBF5B7;
             --gold-dark: #B5952F;
             --white-luxury: #FCFCFC;
-            --tema-estudio: #D4AF37; /* Variable Onyx para mimetizar la plataforma */
+            --tema-estudio: #D4AF37;
         }
 
         .text-gold { color: var(--gold-primary); }
@@ -103,10 +103,8 @@
             100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
         }
 
-        /* --- CLASES NUEVAS PARA EL EFECTO 3D DE DIANA --- */
-        .perspectiva { 
-            perspective: 1200px; 
-        }
+        /* --- CLASES 3D DIANA --- */
+        .perspectiva { perspective: 1200px; }
         .tarjeta-3d {
             transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s;
             transform-style: preserve-3d;
@@ -115,16 +113,53 @@
             transform: rotateY(8deg) rotateX(4deg) scale(1.02);
             box-shadow: -20px 20px 30px rgba(0,0,0,0.1);
         }
-        
-        /* Efecto de marco desfasado detrás de la foto */
-        .marco-3d {
-            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        .marco-3d { transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .grupo-3d:hover .marco-3d { transform: translate3d(20px, -20px, -50px); }
+
+        /* --- NUEVAS CLASES PARA EXPERIENCIA VISUAL TRIDIMENSIONAL DEL PORTAFOLIO --- */
+        .vista-3d {
+            perspective: 2000px;
+            transform-style: preserve-3d;
+            cursor: crosshair;
         }
-        .grupo-3d:hover .marco-3d {
-            transform: translate3d(20px, -20px, -50px);
+        .capa-3d-base {
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .capa-3d-flotante {
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.8s;
+            transform: translateZ(50px);
+        }
+        .capa-3d-profunda {
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s;
+            transform: translateZ(-80px) rotate(-6deg) translateX(20px) scale(0.95);
+            opacity: 0.7;
+            filter: brightness(0.6);
+        }
+        
+        /* Hover Vista Normal */
+        .vista-3d:hover .capa-3d-base { transform: rotateY(18deg) rotateX(5deg); }
+        .vista-3d:hover .capa-3d-flotante {
+            transform: translateZ(120px) translateY(-10px) scale(1.05);
+            box-shadow: -25px 25px 45px rgba(0,0,0,0.4);
+        }
+        .vista-3d:hover .capa-3d-profunda {
+            transform: translateZ(-120px) rotate(-10deg) translateX(50px) scale(0.9);
+            opacity: 0.4;
         }
 
-        /* --- CLASES PARA EL EFECTO SCROLL REVEAL (Aparecen al bajar) --- */
+        /* Hover Vista Inversa (Para intercalar el diseño) */
+        .vista-3d.inversa:hover .capa-3d-base { transform: rotateY(-18deg) rotateX(5deg); }
+        .vista-3d.inversa:hover .capa-3d-flotante {
+            transform: translateZ(120px) translateY(-10px) scale(1.05);
+            box-shadow: 25px 25px 45px rgba(0,0,0,0.4);
+        }
+        .vista-3d.inversa:hover .capa-3d-profunda {
+            transform: translateZ(-120px) rotate(10deg) translateX(-50px) scale(0.9);
+            opacity: 0.4;
+        }
+
+        /* --- EFECTO SCROLL REVEAL --- */
         .reveal { 
             opacity: 0; 
             transform: translateY(50px); 
@@ -154,7 +189,6 @@
 
     <!-- ========== NAVBAR GLOBAL (MYSTERY ONYX) ========== -->
     <header class="border-b border-gray-200 py-3 px-6 md:px-12 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur z-50 shadow-sm">
-        <!-- Logo Camaleónico de Onyx -->
         <a class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition duration-300" href="#" style="text-decoration: none;">
             <svg viewBox="0 0 100 100" class="w-10 h-10 md:w-12 md:h-12" style="filter: drop-shadow(0 0 4px rgba(212,175,55,0.4));">
                 <polygon points="42,5 7,40 42,75" fill="none" stroke="var(--tema-estudio)" stroke-width="2.5" stroke-linejoin="bevel" />
@@ -169,8 +203,8 @@
             </div>
         </a>
         <nav class="hidden md:flex space-x-8 text-gray-600 font-medium tracking-wide">
-            <a href="index.html" class="hover:text-gold-dark transition duration-300">Inicio</a>
-            <a href="#servicios" class="hover:text-gold-dark transition duration-300">Portafolio</a>
+            <a href="#" class="hover:text-gold-dark transition duration-300">Inicio</a>
+            <a href="#experiencia-3d" class="hover:text-gold-dark transition duration-300">Portafolio</a>
         </nav>
         <div>
             <a href="#agenda-interactiva" class="bg-gray-900 text-white font-bold py-3 px-8 rounded-sm shadow-md hover:bg-gold hover:text-black transition duration-300 uppercase text-xs tracking-widest inline-block">
@@ -202,15 +236,13 @@
         </div>
     </section>
 
-    <!-- ========== PRESENTACIÓN DIANA (EFECTO 3D) ========== -->
+    <!-- ========== PRESENTACIÓN DIANA ========== -->
     <main class="max-w-7xl mx-auto px-6 relative z-10 pb-10">
         
         <div class="flex flex-col md:flex-row items-center justify-between gap-16 -mt-32 mb-32 reveal">
-            <!-- Contenedor Foto 3D -->
             <div class="w-full md:w-1/2 perspectiva grupo-3d relative cursor-pointer">
                 <div class="absolute inset-0 border border-gold/50 rounded-sm marco-3d z-0 bg-[#FAFAFA]"></div>
                 <div class="relative tarjeta-3d z-10 bg-white overflow-hidden rounded-sm shadow-xl">
-                    <!-- Agregado object-top para mostrar el rostro -->
                     <img src="Davila Persona.jfif" alt="Diana - Especialista Capilar" class="w-full h-[550px] object-cover object-top filter contrast-[1.1] grayscale-[0.2]">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
                     <div class="absolute bottom-8 left-8">
@@ -220,7 +252,6 @@
                 </div>
             </div>
 
-            <!-- Texto Presentación -->
             <div class="w-full md:w-1/2 text-center md:text-left">
                 <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-gray-400 mb-6 flex items-center justify-center md:justify-start gap-4">
                     <div class="w-8 h-px bg-gray-300"></div>
@@ -238,78 +269,116 @@
         </div>
 
         <!-- ==========================================
-             GALERÍA DE TRABAJOS CATEGORIZADA (SCROLL REVEAL)
+             NUEVA EXPERIENCIA VISUAL 3D (PORTAFOLIO)
              ========================================== -->
-        <section id="servicios" class="mb-24 pt-10 border-t border-gray-100">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-2xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4 font-serif">Portafolio de Alaciados</h2>
-                <div class="h-px w-24 bg-gold mx-auto"></div>
-                <p class="text-gray-500 text-xs mt-4 tracking-widest uppercase font-bold">Resultados por longitud de cabello</p>
+        <section id="experiencia-3d" class="mb-32 pt-16 border-t border-gray-100 overflow-hidden">
+            <div class="text-center mb-24 reveal">
+                <h2 class="text-3xl md:text-4xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4 font-serif">Arte Capilar en 3D</h2>
+                <div class="h-px w-24 bg-gold mx-auto mb-6"></div>
+                <p class="text-gray-500 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+                    Explora nuestra galería inmersiva. Pase el cursor sobre los marcos para descubrir cómo la <span class="text-gold-dark font-bold">Nanoplastia</span>, el <span class="text-gold-dark font-bold">Botox Capilar</span> y <span class="text-gold-dark font-bold">Luminoliss</span> transforman la arquitectura de cada tipo de cabello.
+                </p>
             </div>
 
-            <!-- Grid de Galería -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- APARTADO 1: CABELLO CORTO -->
+            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-20 mb-32 reveal">
+                <!-- Marco Tridimensional -->
+                <div class="w-full md:w-1/2 vista-3d flex justify-center items-center py-10 relative">
+                    <div class="absolute inset-0 bg-gold/5 rounded-full blur-3xl transform scale-150 z-0 opacity-50"></div>
+                    <div class="capa-3d-base relative w-64 md:w-80 h-[400px] md:h-[480px] z-10">
+                        <!-- Foto Posterior (Fondo) -->
+                        <img src="pelo corto 2.jfif" alt="Reflejo Sedosidad" class="absolute inset-0 w-full h-full object-cover rounded-sm capa-3d-profunda shadow-lg">
+                        <!-- Foto Frontal (Principal) -->
+                        <img src="pelo corto.jfif" alt="Alaciado Cabello Corto" class="absolute inset-0 w-full h-full object-cover rounded-sm capa-3d-flotante shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-4 border-white">
+                        
+                        <!-- Elemento flotante decorativo -->
+                        <div class="absolute -right-10 -bottom-10 bg-gray-900 text-gold p-4 rounded-sm shadow-xl capa-3d-flotante flex items-center gap-3">
+                            <span class="font-serif italic text-2xl border-r border-gray-700 pr-3">01</span>
+                            <span class="text-[10px] tracking-widest uppercase font-bold">Movimiento<br>Puro</span>
+                        </div>
+                    </div>
+                </div>
                 
-                <!-- Cabello Corto 1 -->
-                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm reveal" style="transition-delay: 100ms;">
-                    <div class="h-[400px] overflow-hidden">
-                        <img src="pelo corto.jfif" alt="Alaciado Cabello Corto 1" class="w-full h-full object-cover filter opacity-90 group-hover:opacity-100 transition duration-700 transform group-hover:scale-110">
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        <h3 class="text-white font-serif tracking-widest text-xl mb-1">Cabello Corto</h3>
-                        <p class="text-[10px] text-gray-300 tracking-wider mb-4 uppercase font-bold">Alaciado Perfecto</p>
+                <!-- Texto Explicativo -->
+                <div class="w-full md:w-1/2 text-center md:text-left relative z-20">
+                    <div class="text-gold text-6xl font-serif opacity-20 absolute -top-10 -left-6 pointer-events-none">C</div>
+                    <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-2 relative">Cabello Corto</h3>
+                    <h4 class="text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-gold-dark mb-6">Botox Capilar & Nanoplastia</h4>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        En longitudes cortas, el objetivo es evitar la rigidez. Aplicamos <strong>Botox Capilar</strong> para inyectar hidratación profunda y rejuvenecer la fibra desde la raíz. 
+                    </p>
+                    <p class="text-gray-600 leading-relaxed border-l-2 border-gold/30 pl-4 italic">
+                        La fusión con <strong>Nanoplastia</strong> permite alisar el cabello rebelde conservando un volumen controlado y un acabado sedoso, garantizando un estilo dinámico y libre de frizz.
+                    </p>
+                </div>
+            </div>
+
+            <!-- APARTADO 2: CABELLO MEDIANO (INVERSO) -->
+            <div class="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-20 mb-32 reveal">
+                <!-- Marco Tridimensional Inverso -->
+                <div class="w-full md:w-1/2 vista-3d inversa flex justify-center items-center py-10 relative">
+                    <div class="absolute inset-0 bg-gray-200/50 rounded-full blur-3xl transform scale-150 z-0 opacity-50"></div>
+                    <div class="capa-3d-base relative w-64 md:w-80 h-[400px] md:h-[480px] z-10">
+                        <!-- Placa Decorativa Posterior -->
+                        <div class="absolute inset-0 bg-gray-900 rounded-sm capa-3d-profunda shadow-lg border border-gray-700 flex items-center justify-center">
+                            <svg viewBox="0 0 100 100" class="w-32 h-32 opacity-20" stroke="var(--gold-dark)">
+                                <polygon points="50,15 90,50 50,85 10,50" fill="none" stroke-width="1" />
+                            </svg>
+                        </div>
+                        <!-- Foto Frontal (Principal) -->
+                        <img src="pelo mediano.jfif" alt="Alaciado Cabello Mediano" class="absolute inset-0 w-full h-full object-cover rounded-sm capa-3d-flotante shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-4 border-white">
+                        
+                        <div class="absolute -left-10 -top-6 bg-white text-gray-900 p-4 rounded-sm shadow-xl capa-3d-flotante flex items-center gap-3">
+                            <span class="font-serif italic text-2xl border-r border-gray-200 pr-3">02</span>
+                            <span class="text-[10px] tracking-widest uppercase font-bold text-gray-500">Reflejo<br>Absoluto</span>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Texto Explicativo -->
+                <div class="w-full md:w-1/2 text-center md:text-left relative z-20">
+                    <div class="text-gold text-6xl font-serif opacity-20 absolute -top-10 -right-6 md:right-auto md:-left-6 pointer-events-none">M</div>
+                    <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-2 relative">Cabello Mediano</h3>
+                    <h4 class="text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-gold-dark mb-6">Luminoliss Efecto Espejo</h4>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        Las longitudes medias son el lienzo perfecto para deslumbrar. Aquí, el protagonista indiscutible es el tratamiento <strong>Luminoliss</strong>.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed border-l-2 border-gold/30 pl-4 italic">
+                        Actúa sellando las cutículas al extremo, creando un brillo tridimensional conocido como "efecto espejo". Elimina la porosidad al instante, transformando el cabello opaco en una cortina de luz manejable y lisa.
+                    </p>
+                </div>
+            </div>
 
-                <!-- Cabello Corto 2 -->
-                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm reveal" style="transition-delay: 200ms;">
-                    <div class="h-[400px] overflow-hidden">
-                        <img src="pelo corto 2.jfif" alt="Alaciado Cabello Corto 2" class="w-full h-full object-cover filter opacity-90 group-hover:opacity-100 transition duration-700 transform group-hover:scale-110">
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        <h3 class="text-white font-serif tracking-widest text-xl mb-1">Cabello Corto</h3>
-                        <p class="text-[10px] text-gray-300 tracking-wider mb-4 uppercase font-bold">Brillo y Sedosidad</p>
+            <!-- APARTADO 3: CABELLO LARGO -->
+            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-20 mb-10 reveal">
+                <!-- Marco Tridimensional -->
+                <div class="w-full md:w-1/2 vista-3d flex justify-center items-center py-10 relative">
+                    <div class="absolute inset-0 bg-gold/5 rounded-full blur-3xl transform scale-150 z-0 opacity-50"></div>
+                    <div class="capa-3d-base relative w-64 md:w-80 h-[400px] md:h-[480px] z-10">
+                        <!-- Foto Posterior (Fondo) -->
+                        <img src="pelo largo 2.jfif" alt="Control Frizz Cabello Largo" class="absolute inset-0 w-full h-full object-cover rounded-sm capa-3d-profunda shadow-lg">
+                        <!-- Foto Frontal (Principal) -->
+                        <img src="pelo Largo.jfif" alt="Alaciado Cabello Largo Abundante" class="absolute inset-0 w-full h-full object-cover rounded-sm capa-3d-flotante shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-4 border-white">
+                        
+                        <div class="absolute -right-10 top-1/2 -translate-y-1/2 bg-gray-900 text-gold p-4 rounded-sm shadow-xl capa-3d-flotante flex flex-col items-center gap-2">
+                            <span class="font-serif italic text-2xl border-b border-gray-700 pb-2">03</span>
+                            <span class="text-[9px] tracking-[0.3em] uppercase font-bold text-center mt-1">Liso<br>Extremo</span>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Cabello Mediano -->
-                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm reveal" style="transition-delay: 300ms;">
-                    <div class="h-[400px] overflow-hidden">
-                        <img src="pelo mediano.jfif" alt="Alaciado Cabello Mediano" class="w-full h-full object-cover filter opacity-90 group-hover:opacity-100 transition duration-700 transform group-hover:scale-110">
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        <h3 class="text-white font-serif tracking-widest text-xl mb-1">Cabello Mediano</h3>
-                        <p class="text-[10px] text-gray-300 tracking-wider mb-4 uppercase font-bold">Liso Definitivo</p>
-                    </div>
+                
+                <!-- Texto Explicativo -->
+                <div class="w-full md:w-1/2 text-center md:text-left relative z-20">
+                    <div class="text-gold text-6xl font-serif opacity-20 absolute -top-10 -left-6 pointer-events-none">L</div>
+                    <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-2 relative">Cabello Largo Abundante</h3>
+                    <h4 class="text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-gold-dark mb-6">Fusión: Nanoplastia + Luminoliss</h4>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        Las melenas largas y abundantes exigen arquitectura y control absoluto. Nuestro protocolo VIP fusiona lo mejor de dos mundos.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed border-l-2 border-gold/30 pl-4 italic">
+                        El poder alisador orgánico de la <strong>Nanoplastia</strong> doma el volumen extremo reestructurando la hebra, mientras el baño final de <strong>Luminoliss</strong> sella el trabajo, garantizando que tu cabello caiga pesado, lacio y como una cascada de brillo inquebrantable.
+                    </p>
                 </div>
-
-                <!-- Cabello Largo 1 -->
-                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm reveal" style="transition-delay: 400ms;">
-                    <div class="h-[400px] overflow-hidden">
-                        <img src="pelo Largo.jfif" alt="Alaciado Cabello Largo 1" class="w-full h-full object-cover filter opacity-90 group-hover:opacity-100 transition duration-700 transform group-hover:scale-110">
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        <h3 class="text-white font-serif tracking-widest text-xl mb-1">Cabello Largo</h3>
-                        <p class="text-[10px] text-gray-300 tracking-wider mb-4 uppercase font-bold">Efecto Espejo</p>
-                    </div>
-                </div>
-
-                <!-- Cabello Largo 2 -->
-                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm reveal md:col-span-2 lg:col-span-1" style="transition-delay: 500ms;">
-                    <div class="h-[400px] overflow-hidden">
-                        <img src="pelo largo 2.jfif" alt="Alaciado Cabello Largo 2" class="w-full h-full object-cover filter opacity-90 group-hover:opacity-100 transition duration-700 transform group-hover:scale-110">
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        <h3 class="text-white font-serif tracking-widest text-xl mb-1">Cabello Largo</h3>
-                        <p class="text-[10px] text-gray-300 tracking-wider mb-4 uppercase font-bold">Control de Frizz Extremo</p>
-                    </div>
-                </div>
-
             </div>
         </section>
 
@@ -318,7 +387,7 @@
             <div class="text-center mb-12">
                 <h2 class="text-2xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4 font-serif">Configura tu Cita</h2>
                 <div class="h-px w-24 bg-gold mx-auto"></div>
-                <p class="text-gray-500 text-xs mt-4 tracking-widest uppercase font-bold">Selecciona tu categoría, día y hora</p>
+                <p class="text-gray-500 text-xs mt-4 tracking-widest uppercase font-bold">Selecciona tu categoría, tratamiento, día y hora</p>
             </div>
 
             <div class="border border-gray-200 bg-white p-8 md:p-12 rounded-sm shadow-xl relative overflow-hidden">
@@ -326,7 +395,6 @@
                 
                 <form id="formulario-reserva" class="relative z-10 space-y-8">
                     
-                    <!-- Selección de Categoría -->
                     <div class="flex flex-col">
                         <label for="categoria-largo" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">1. Longitud de tu Cabello</label>
                         <select id="categoria-largo" class="w-full border-b-2 border-gray-200 py-3 text-gray-700 bg-transparent focus:outline-none focus:border-gold transition-colors text-lg font-serif appearance-none cursor-pointer">
@@ -336,19 +404,28 @@
                         </select>
                     </div>
 
-                    <!-- Selección de Fecha y Hora -->
+                    <!-- NUEVO CAMPO AGREGADO -->
+                    <div class="flex flex-col">
+                        <label for="tipo-alaciado" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">2. ¿Qué tipo de alaciado quieres?</label>
+                        <select id="tipo-alaciado" class="w-full border-b-2 border-gray-200 py-3 text-gray-700 bg-transparent focus:outline-none focus:border-gold transition-colors text-lg font-serif appearance-none cursor-pointer">
+                            <option value="Nanoplastia">Nanoplastia</option>
+                            <option value="Botox Capilar">Botox Capilar</option>
+                            <option value="Luminoliss">Luminoliss</option>
+                            <option value="Valoración">Recomendación de Diana (Valoración en estudio)</option>
+                        </select>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="flex flex-col">
-                            <label for="fecha-cita" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">2. Fecha Deseada</label>
+                            <label for="fecha-cita" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">3. Fecha Deseada</label>
                             <input type="date" id="fecha-cita" required class="w-full border-b-2 border-gray-200 py-3 text-gray-700 bg-transparent focus:outline-none focus:border-gold transition-colors font-serif">
                         </div>
                         <div class="flex flex-col">
-                            <label for="hora-cita" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">3. Hora Deseada</label>
+                            <label for="hora-cita" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">4. Hora Deseada</label>
                             <input type="time" id="hora-cita" required class="w-full border-b-2 border-gray-200 py-3 text-gray-700 bg-transparent focus:outline-none focus:border-gold transition-colors font-serif">
                         </div>
                     </div>
 
-                    <!-- Resumen y Botón -->
                     <div class="pt-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6">
                         <div>
                             <p class="text-gray-500 text-xs tracking-widest uppercase font-bold mb-1">Inversión Estimada</p>
@@ -372,7 +449,6 @@
                 <h2 class="text-2xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4 font-serif">Experiencias VIP</h2>
                 <div class="h-px w-24 bg-gold mx-auto"></div>
             </div>
-            <!-- Contenedor dinámico (Se llena con JS) -->
             <div id="lista-resenas" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
         </section>
         
@@ -380,7 +456,6 @@
 
     <!-- ========== FOOTER ========== -->
     <footer class="bg-gray-100 border-t border-gray-200 mt-20 py-10 text-center flex flex-col items-center justify-center">
-        <!-- Logo Onyx Footer -->
         <svg viewBox="0 0 100 100" class="w-6 h-6 mb-3" style="filter: grayscale(100%); opacity: 0.5;">
             <polygon points="50,45 55,50 50,55 45,50" fill="currentColor" />
             <polygon points="42,5 7,40 42,75" fill="none" stroke="currentColor" stroke-width="2" />
@@ -392,7 +467,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. Efecto Lluvia de Oro (Intro)
             setTimeout(() => {
                 const linea = document.getElementById('linea-divisora');
                 if(linea) {
@@ -416,7 +490,6 @@
                 contenedorLluvia.appendChild(polvo);
             }
 
-            // 2. Intersection Observer (Animación de Revelado al bajar)
             const revealElements = document.querySelectorAll('.reveal');
             const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -432,30 +505,28 @@
             });
             revealElements.forEach(el => revealObserver.observe(el));
 
-            // 3. Lógica del Formulario de Reserva Dinámica
             const selectCategoria = document.getElementById('categoria-largo');
+            const selectTipoTratamiento = document.getElementById('tipo-alaciado');
             const inputFecha = document.getElementById('fecha-cita');
             const inputHora = document.getElementById('hora-cita');
             const precioMostrado = document.getElementById('precio-mostrado');
             const btnWhatsapp = document.getElementById('btn-whatsapp-dinamico');
             
-            // Número de WhatsApp (Reemplazar por el real)
             const numeroWhatsapp = "528680000000";
 
             function actualizarReserva() {
-                // Actualizar Precio Visual
                 const opcionSeleccionada = selectCategoria.options[selectCategoria.selectedIndex];
                 const precio = opcionSeleccionada.getAttribute('data-precio');
                 const categoriaTexto = opcionSeleccionada.text.split(' - ')[0];
+                const tipoTratamientoTexto = selectTipoTratamiento.options[selectTipoTratamiento.selectedIndex].text;
+
                 precioMostrado.innerHTML = `$${precio} <span class="text-sm font-sans text-gray-400">MXN</span>`;
 
-                // Construir Enlace de WhatsApp
                 let mensaje = `¡Hola Diana! Me gustaría agendar una cita en Davila Studio. %0A%0A`;
-                mensaje += `✨ *Servicio:* Alaciado para ${categoriaTexto} %0A`;
+                mensaje += `✨ *Servicio:* ${tipoTratamientoTexto} en ${categoriaTexto} %0A`;
                 
                 if(inputFecha.value) {
-                    // Formatear fecha para que sea más legible
-                    const fechaObj = new Date(inputFecha.value + 'T00:00:00'); // Evitar desfase de zona horaria
+                    const fechaObj = new Date(inputFecha.value + 'T00:00:00');
                     const fechaFormateada = fechaObj.toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
                     mensaje += `📅 *Día:* ${fechaFormateada} %0A`;
                 } else {
@@ -474,16 +545,13 @@
                 btnWhatsapp.href = `https://wa.me/${numeroWhatsapp}?text=${mensaje}`;
             }
 
-            // Escuchar cambios en los inputs para actualizar el enlace en tiempo real
             selectCategoria.addEventListener('change', actualizarReserva);
+            selectTipoTratamiento.addEventListener('change', actualizarReserva);
             inputFecha.addEventListener('change', actualizarReserva);
             inputHora.addEventListener('change', actualizarReserva);
             
-            // Inicializar enlace en carga
             actualizarReserva();
 
-
-            // 4. Carga rápida de Reseñas (Demo visual)
             function crearHTMLResena(resena) {
                 let diamantesHTML = '';
                 for(let i=0; i<5; i++) {
