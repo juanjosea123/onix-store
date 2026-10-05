@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Davila Beauty - Mystique One</title>
+    <title>Davila Beauty - Powered by Mystery Onyx</title>
     <!-- Integración de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -13,6 +13,7 @@
             --gold-light: #FBF5B7;
             --gold-dark: #B5952F;
             --white-luxury: #FCFCFC;
+            --tema-estudio: #D4AF37; /* Variable Onyx para mimetizar la plataforma */
         }
 
         .text-gold { color: var(--gold-primary); }
@@ -44,7 +45,7 @@
             100% { left: 200%; }
         }
 
-        /* Animaciones Cinemáticas */
+        /* Animaciones Cinemáticas de Intro */
         .pantalla-intro {
             animation: salidaCinematica 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
             animation-delay: 2.5s; 
@@ -102,13 +103,36 @@
             100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
         }
 
-        /* Animación para nuevos comentarios */
-        .fade-in-up {
-            animation: fadeInUp 0.5s ease-out forwards;
+        /* --- CLASES NUEVAS PARA EL EFECTO 3D DE DIANA --- */
+        .perspectiva { 
+            perspective: 1200px; 
         }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .tarjeta-3d {
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s;
+            transform-style: preserve-3d;
+        }
+        .grupo-3d:hover .tarjeta-3d {
+            transform: rotateY(8deg) rotateX(4deg) scale(1.02);
+            box-shadow: -20px 20px 30px rgba(0,0,0,0.1);
+        }
+        
+        /* Efecto de marco desfasado detrás de la foto */
+        .marco-3d {
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .grupo-3d:hover .marco-3d {
+            transform: translate3d(20px, -20px, -50px);
+        }
+
+        /* --- CLASES PARA EL EFECTO SCROLL REVEAL (Aparecen al bajar) --- */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(50px); 
+            transition: all 0.9s cubic-bezier(0.5, 0, 0, 1); 
+        }
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0); 
         }
     </style>
 </head>
@@ -128,252 +152,248 @@
         </div>
     </div>
 
-    <!-- ========== NAVBAR GLOBAL ========== -->
+    <!-- ========== NAVBAR GLOBAL (MYSTERY ONYX) ========== -->
     <header class="border-b border-gray-200 py-3 px-6 md:px-12 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur z-50 shadow-sm">
-        <div class="w-72 md:w-80 cursor-pointer hover:opacity-80 transition duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 200" width="100%" height="100%">
-              <defs>
-                <linearGradient id="oro" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#D4AF37" />
-                  <stop offset="100%" stop-color="#997A15" />
-                </linearGradient>
-              </defs>
-              <g transform="translate(10, 50)">
-                <polygon points="50,0 100,25 100,75 50,100 0,75 0,25" fill="none" stroke="url(#oro)" stroke-width="4" />
-                <polyline points="0,25 50,50 100,25" fill="none" stroke="url(#oro)" stroke-width="2" opacity="0.9"/>
-                <polyline points="0,75 50,50 100,75" fill="none" stroke="url(#oro)" stroke-width="2" opacity="0.9"/>
-                <line x1="50" y1="0" x2="50" y2="100" stroke="url(#oro)" stroke-width="2" opacity="0.9" />
-              </g>
-              <text x="135" y="115" font-family="Georgia, serif" font-size="52" font-weight="bold" letter-spacing="4">
-                  <tspan fill="url(#oro)">MYSTIQUE </tspan>
-                  <tspan fill="#111111">ONE</tspan>
-              </text>
-              <text x="140" y="150" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#666666" letter-spacing="9">LA CASA DE LA CALIDAD</text>
+        <!-- Logo Camaleónico de Onyx -->
+        <a class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition duration-300" href="#" style="text-decoration: none;">
+            <svg viewBox="0 0 100 100" class="w-10 h-10 md:w-12 md:h-12" style="filter: drop-shadow(0 0 4px rgba(212,175,55,0.4));">
+                <polygon points="42,5 7,40 42,75" fill="none" stroke="var(--tema-estudio)" stroke-width="2.5" stroke-linejoin="bevel" />
+                <polygon points="58,25 93,60 58,95" fill="none" stroke="var(--tema-estudio)" stroke-width="2.5" stroke-linejoin="bevel" />
+                <polygon points="50,45 55,50 50,55 45,50" fill="var(--tema-estudio)" />
+                <line x1="42" y1="5" x2="58" y2="25" stroke="var(--tema-estudio)" stroke-width="1.5" stroke-dasharray="2 4" />
+                <line x1="42" y1="75" x2="58" y2="95" stroke="var(--tema-estudio)" stroke-width="1.5" stroke-dasharray="2 4" />
             </svg>
-        </div>
-        
+            <div class="flex flex-col justify-center">
+                <span style="font-family: 'Cinzel', serif;" class="text-base md:text-lg tracking-[0.25em] font-bold text-gray-900 leading-none">MYSTERY</span>
+                <span class="text-[0.45rem] md:text-[0.55rem] tracking-[0.4em] font-sans text-gold mt-1">ONYX</span>
+            </div>
+        </a>
         <nav class="hidden md:flex space-x-8 text-gray-600 font-medium tracking-wide">
             <a href="#" class="hover:text-gold-dark transition duration-300">Inicio</a>
-            <a href="#servicios" class="hover:text-gold-dark transition duration-300">Servicios</a>
-            <a href="#resenas" class="hover:text-gold-dark transition duration-300">Experiencias</a>
+            <a href="#servicios" class="hover:text-gold-dark transition duration-300">Portafolio</a>
+            <a href="#agenda-interactiva" class="hover:text-gold-dark transition duration-300">Agendar</a>
         </nav>
-        
         <div>
-            <a href="#agenda" class="bg-gold text-white font-bold py-3 px-8 rounded-sm shadow-md hover:bg-[#B5952F] transition duration-300 uppercase text-sm tracking-widest inline-block">
-                Agendar Cita
+            <a href="#agenda-interactiva" class="bg-gray-900 text-white font-bold py-3 px-8 rounded-sm shadow-md hover:bg-gold hover:text-black transition duration-300 uppercase text-xs tracking-widest inline-block">
+                Agendar
             </a>
         </div>
     </header>
 
     <!-- ========== ENCABEZADO VIP ========== -->
-    <section class="bg-[#FAFAFA] border-b border-gray-100 pt-16 pb-40 px-6 relative">
+    <section class="bg-[#FAFAFA] border-b border-gray-100 pt-12 pb-48 px-6 relative">
         <div class="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] pointer-events-none"></div>
-        
-        <div class="max-w-5xl mx-auto mb-10 flex justify-between items-center relative z-10">
-            <a href="#" class="text-gray-500 hover:text-gold-dark transition font-bold text-sm uppercase tracking-widest flex items-center gap-2">
+        <div class="max-w-6xl mx-auto mb-10 flex justify-between items-center relative z-10">
+            <a href="index.html" class="text-gray-500 hover:text-gold-dark transition font-bold text-xs uppercase tracking-widest flex items-center gap-2">
                 &larr; Volver al catálogo
             </a>
-            
-            <span class="vip-badge text-black font-black px-6 py-2 rounded-sm text-xs md:text-sm uppercase tracking-[0.3em] flex items-center gap-2 border border-[#FFF2CD]">
-                <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20">
+            <span class="vip-badge text-black font-black px-4 py-2 rounded-sm text-[10px] md:text-xs uppercase tracking-[0.3em] flex items-center gap-2 border border-[#FFF2CD]">
+                <svg class="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                 </svg>
-                Servicio VIP
+                Premium Onyx
             </span>
         </div>
 
-        <div class="max-w-3xl mx-auto text-center relative z-10 mt-10">
-            <h1 class="text-5xl md:text-7xl font-serif text-gray-900 mb-2 tracking-widest uppercase">
+        <div class="max-w-4xl mx-auto text-center relative z-10 mt-6">
+            <h1 class="text-6xl md:text-8xl font-serif text-gray-900 mb-2 tracking-widest uppercase" style="font-family: 'Cinzel', serif;">
                 Davila <span class="text-gold font-light">Studio</span>
             </h1>
             <p class="text-gray-500 tracking-[0.4em] uppercase text-xs md:text-sm mt-6 font-bold">Restauración Capilar de Alta Gama</p>
         </div>
     </section>
 
-    <!-- ========== CONTENIDO PRINCIPAL ========== -->
-    <main class="max-w-5xl mx-auto px-6 relative z-10 pb-10">
+    <!-- ========== PRESENTACIÓN DIANA (EFECTO 3D) ========== -->
+    <main class="max-w-7xl mx-auto px-6 relative z-10 pb-10">
         
-        <div class="bg-white text-gray-900 rounded-sm shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 -mt-24 mb-24 p-12 md:p-20 text-center relative overflow-hidden max-w-4xl mx-auto">
-            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-48 h-1 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
-            <h3 class="text-sm font-bold uppercase tracking-[0.3em] text-gray-400 mb-8">Conóceme</h3>
-            <p class="font-quote text-2xl md:text-3xl leading-relaxed text-gray-700 italic max-w-2xl mx-auto">
-                "¿Tienes dudas? ¿Quieres saber por qué te puede llegar a poner feo el cabello?"
-            </p>
-            <div class="mt-10 mb-2 flex justify-center"><div class="w-16 h-px bg-gold"></div></div>
-            <p class="font-bold text-gray-900 text-xl md:text-2xl uppercase tracking-[0.15em] mt-8">
-                Llegaste con la <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#B5952F]">persona indicada</span>.
-            </p>
+        <div class="flex flex-col md:flex-row items-center justify-between gap-16 -mt-32 mb-32 reveal">
+            <!-- Contenedor Foto 3D -->
+            <div class="w-full md:w-1/2 perspectiva grupo-3d relative cursor-pointer">
+                <div class="absolute inset-0 border border-gold/50 rounded-sm marco-3d z-0 bg-[#FAFAFA]"></div>
+                <div class="relative tarjeta-3d z-10 bg-white overflow-hidden rounded-sm shadow-xl">
+                    <!-- Agregado object-top para mostrar el rostro -->
+                    <img src="Davila Persona.jfif" alt="Diana - Especialista Capilar" class="w-full h-[550px] object-cover object-top filter contrast-[1.1] grayscale-[0.2]">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+                    <div class="absolute bottom-8 left-8">
+                        <p class="text-gold font-bold tracking-[0.3em] text-[10px] uppercase mb-2 drop-shadow-md">Directora Creativa</p>
+                        <h3 class="text-white text-3xl font-serif tracking-widest">Diana Davila</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Texto Presentación -->
+            <div class="w-full md:w-1/2 text-center md:text-left">
+                <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-gray-400 mb-6 flex items-center justify-center md:justify-start gap-4">
+                    <div class="w-8 h-px bg-gray-300"></div>
+                    Conóceme
+                </h3>
+                <p class="font-quote text-2xl md:text-4xl leading-tight text-gray-800 italic mb-8 relative">
+                    <span class="text-gold text-6xl absolute -top-6 -left-6 opacity-30 font-serif">"</span>
+                    ¿Tienes dudas? ¿Quieres saber por qué te puede llegar a poner feo el cabello?
+                </p>
+                <p class="font-bold text-gray-900 text-lg md:text-xl uppercase tracking-[0.15em] leading-relaxed">
+                    Hola, soy Diana.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold to-gold-dark text-2xl md:text-3xl block mt-2">Llegaste con la persona indicada.</span>
+                </p>
+            </div>
         </div>
 
         <!-- ==========================================
-             GALERÍA DE CATEGORÍAS (DISEÑO ORIGINAL MANTENIDO)
+             GALERÍA DE TRABAJOS CATEGORIZADA (SCROLL REVEAL)
              ========================================== -->
-        <section id="servicios" class="mb-24">
-            <div class="text-center mb-12">
-                <h2 class="text-2xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4">Categorías de Trabajo</h2>
+        <section id="servicios" class="mb-24 pt-10 border-t border-gray-100">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-2xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4 font-serif">Portafolio de Alaciados</h2>
                 <div class="h-px w-24 bg-gold mx-auto"></div>
-                <p class="text-gray-500 text-sm mt-4 tracking-widest uppercase font-bold">Especialidades en Cabello</p>
+                <p class="text-gray-500 text-xs mt-4 tracking-widest uppercase font-bold">Resultados por longitud de cabello</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Categoría 1 -->
-                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=500&q=80" alt="Alaciado Japonés" class="w-full h-80 object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition duration-500 transform group-hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
-                    
-                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center flex flex-col justify-end h-full pb-8">
-                        <h3 class="text-white font-bold uppercase tracking-widest text-lg">Alaciado Japonés</h3>
-                        <p class="text-xs text-gray-300 mt-2 tracking-wider mb-5">Liso definitivo y efecto espejo</p>
-                        
-                        <!-- BOTÓN INTEGRADO DENTRO DE LA TARJETA -->
-                        <a href="https://wa.me/528680000000?text=Hola,%20soy%20________.%20Agendo%20desde%20Mystique%20y%20quiero%20el%20servicio%20de%20*Alaciado%20Japonés*.%0A%0A📅%20Fecha:%20%0A⏰%20Horario:%20" target="_blank" class="inline-block mx-auto bg-gold text-black text-[10px] font-bold uppercase tracking-widest py-2 px-6 rounded-sm hover:bg-white transition-colors duration-300 shadow-md">
-                            Agendar
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Categoría 2 -->
-                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=500&q=80" alt="Keratina" class="w-full h-80 object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition duration-500 transform group-hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
-                    
-                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center flex flex-col justify-end h-full pb-8">
-                        <h3 class="text-white font-bold uppercase tracking-widest text-lg">Keratina Brasileña</h3>
-                        <p class="text-xs text-gray-300 mt-2 tracking-wider mb-5">Control de frizz y restauración</p>
-                        
-                        <!-- BOTÓN INTEGRADO DENTRO DE LA TARJETA -->
-                        <a href="https://wa.me/528680000000?text=Hola,%20soy%20________.%20Agendo%20desde%20Mystique%20y%20quiero%20el%20servicio%20de%20*Keratina%20Brasileña*.%0A%0A📅%20Fecha:%20%0A⏰%20Horario:%20" target="_blank" class="inline-block mx-auto bg-gold text-black text-[10px] font-bold uppercase tracking-widest py-2 px-6 rounded-sm hover:bg-white transition-colors duration-300 shadow-md">
-                            Agendar
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Categoría 3 -->
-                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=500&q=80" alt="Extensiones" class="w-full h-80 object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition duration-500 transform group-hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
-                    
-                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center flex flex-col justify-end h-full pb-8">
-                        <h3 class="text-white font-bold uppercase tracking-widest text-lg">Extensiones</h3>
-                        <p class="text-xs text-gray-300 mt-2 tracking-wider mb-5">Aplicación invisible y volumen</p>
-                        
-                        <!-- BOTÓN INTEGRADO DENTRO DE LA TARJETA -->
-                        <a href="https://wa.me/528680000000?text=Hola,%20soy%20________.%20Agendo%20desde%20Mystique%20y%20quiero%20el%20servicio%20de%20*Extensiones*.%0A%0A📅%20Fecha:%20%0A⏰%20Horario:%20" target="_blank" class="inline-block mx-auto bg-gold text-black text-[10px] font-bold uppercase tracking-widest py-2 px-6 rounded-sm hover:bg-white transition-colors duration-300 shadow-md">
-                            Agendar
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN DE PRECIOS -->
-        <section class="mb-24 max-w-4xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-2xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4">Menú de Servicios</h2>
-                <div class="h-px w-24 bg-gold mx-auto"></div>
-            </div>
-
-            <div class="border border-gray-200 bg-white p-8 md:p-14 rounded-sm shadow-lg relative">
-                <div class="flex flex-col space-y-8 relative z-10">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-100 pb-5 hover:pl-2 transition-all duration-300 gap-4">
-                        <h4 class="text-gray-800 font-bold text-lg tracking-wide">Alaciado Japonés</h4>
-                        <div class="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
-                            <span class="text-gold-dark font-serif text-2xl font-bold">$800</span>
-                            <a href="https://wa.me/528680000000?text=Hola,%20soy%20________.%20Agendo%20desde%20Mystique%20y%20quiero%20el%20servicio%20de%20*Alaciado%20Japonés*.%0A%0A📅%20Fecha:%20%0A⏰%20Horario:%20" target="_blank" class="bg-gray-900 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider py-2 px-4 rounded-sm hover:bg-gold hover:text-black transition-colors shadow-sm">Agendar</a>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-100 pb-5 hover:pl-2 transition-all duration-300 gap-4">
-                        <h4 class="text-gray-800 font-bold text-lg tracking-wide">Keratina Brasileña</h4>
-                        <div class="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
-                            <span class="text-gold-dark font-serif text-2xl font-bold">$600</span>
-                            <a href="https://wa.me/528680000000?text=Hola,%20soy%20________.%20Agendo%20desde%20Mystique%20y%20quiero%20el%20servicio%20de%20*Keratina%20Brasileña*.%0A%0A📅%20Fecha:%20%0A⏰%20Horario:%20" target="_blank" class="bg-gray-900 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider py-2 px-4 rounded-sm hover:bg-gold hover:text-black transition-colors shadow-sm">Agendar</a>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-2 hover:pl-2 transition-all duration-300 gap-4">
-                        <h4 class="text-gray-800 font-bold text-lg tracking-wide">Botox Capilar</h4>
-                        <div class="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
-                            <span class="text-gold-dark font-serif text-2xl font-bold">$500</span>
-                            <a href="https://wa.me/528680000000?text=Hola,%20soy%20________.%20Agendo%20desde%20Mystique%20y%20quiero%20el%20servicio%20de%20*Botox%20Capilar*.%0A%0A📅%20Fecha:%20%0A⏰%20Horario:%20" target="_blank" class="bg-gray-900 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider py-2 px-4 rounded-sm hover:bg-gold hover:text-black transition-colors shadow-sm">Agendar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             NUEVA SECCIÓN: SISTEMA DE RESEÑAS CON DIAMANTES
-             ========================================== -->
-        <section id="resenas" class="mb-24 max-w-4xl mx-auto">
-            <div class="text-center mb-12">
-                <h2 class="text-2xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4">Experiencias VIP</h2>
-                <div class="h-px w-24 bg-gold mx-auto"></div>
-                <p class="text-gray-500 text-sm mt-4 tracking-widest uppercase font-bold">Lo que dicen nuestras clientas</p>
-            </div>
-
-            <!-- Contenedor dinámico -->
-            <div id="lista-resenas" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12"></div>
-
-            <!-- Formulario No Invasivo -->
-            <div class="bg-white border border-gray-200 p-8 rounded-sm shadow-md">
-                <h4 class="text-lg font-serif text-gray-800 mb-6 text-center">Déjanos tu experiencia</h4>
+            <!-- Grid de Galería -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
-                <form id="form-resena" class="space-y-4 max-w-lg mx-auto">
-                    <!-- Sistema de Calificación con DIAMANTES -->
-                    <div class="flex justify-center items-center gap-2 mb-4 cursor-pointer" id="selector-diamantes">
-                        <svg data-valor="1" class="diamante w-8 h-8 text-gold transition-transform hover:scale-110" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25l-4.5 4.5h9l-4.5-4.5zM3 8.25l9 13.5 9-13.5H3z"/></svg>
-                        <svg data-valor="2" class="diamante w-8 h-8 text-gold transition-transform hover:scale-110" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25l-4.5 4.5h9l-4.5-4.5zM3 8.25l9 13.5 9-13.5H3z"/></svg>
-                        <svg data-valor="3" class="diamante w-8 h-8 text-gold transition-transform hover:scale-110" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25l-4.5 4.5h9l-4.5-4.5zM3 8.25l9 13.5 9-13.5H3z"/></svg>
-                        <svg data-valor="4" class="diamante w-8 h-8 text-gold transition-transform hover:scale-110" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25l-4.5 4.5h9l-4.5-4.5zM3 8.25l9 13.5 9-13.5H3z"/></svg>
-                        <svg data-valor="5" class="diamante w-8 h-8 text-gold transition-transform hover:scale-110" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25l-4.5 4.5h9l-4.5-4.5zM3 8.25l9 13.5 9-13.5H3z"/></svg>
+                <!-- Cabello Corto 1 -->
+                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm reveal" style="transition-delay: 100ms;">
+                    <div class="h-[400px] overflow-hidden">
+                        <img src="pelo corto.jfif" alt="Alaciado Cabello Corto 1" class="w-full h-full object-cover filter opacity-90 group-hover:opacity-100 transition duration-700 transform group-hover:scale-110">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-white font-serif tracking-widest text-xl mb-1">Cabello Corto</h3>
+                        <p class="text-[10px] text-gray-300 tracking-wider mb-4 uppercase font-bold">Alaciado Perfecto</p>
+                    </div>
+                </div>
+
+                <!-- Cabello Corto 2 -->
+                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm reveal" style="transition-delay: 200ms;">
+                    <div class="h-[400px] overflow-hidden">
+                        <img src="pelo corto 2.jfif" alt="Alaciado Cabello Corto 2" class="w-full h-full object-cover filter opacity-90 group-hover:opacity-100 transition duration-700 transform group-hover:scale-110">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-white font-serif tracking-widest text-xl mb-1">Cabello Corto</h3>
+                        <p class="text-[10px] text-gray-300 tracking-wider mb-4 uppercase font-bold">Brillo y Sedosidad</p>
+                    </div>
+                </div>
+
+                <!-- Cabello Mediano -->
+                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm reveal" style="transition-delay: 300ms;">
+                    <div class="h-[400px] overflow-hidden">
+                        <img src="pelo mediano.jfif" alt="Alaciado Cabello Mediano" class="w-full h-full object-cover filter opacity-90 group-hover:opacity-100 transition duration-700 transform group-hover:scale-110">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-white font-serif tracking-widest text-xl mb-1">Cabello Mediano</h3>
+                        <p class="text-[10px] text-gray-300 tracking-wider mb-4 uppercase font-bold">Liso Definitivo</p>
+                    </div>
+                </div>
+
+                <!-- Cabello Largo 1 -->
+                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm reveal" style="transition-delay: 400ms;">
+                    <div class="h-[400px] overflow-hidden">
+                        <img src="pelo Largo.jfif" alt="Alaciado Cabello Largo 1" class="w-full h-full object-cover filter opacity-90 group-hover:opacity-100 transition duration-700 transform group-hover:scale-110">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-white font-serif tracking-widest text-xl mb-1">Cabello Largo</h3>
+                        <p class="text-[10px] text-gray-300 tracking-wider mb-4 uppercase font-bold">Efecto Espejo</p>
+                    </div>
+                </div>
+
+                <!-- Cabello Largo 2 -->
+                <div class="relative group overflow-hidden rounded-sm border border-gray-200 bg-white shadow-sm reveal md:col-span-2 lg:col-span-1" style="transition-delay: 500ms;">
+                    <div class="h-[400px] overflow-hidden">
+                        <img src="pelo largo 2.jfif" alt="Alaciado Cabello Largo 2" class="w-full h-full object-cover filter opacity-90 group-hover:opacity-100 transition duration-700 transform group-hover:scale-110">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-white font-serif tracking-widest text-xl mb-1">Cabello Largo</h3>
+                        <p class="text-[10px] text-gray-300 tracking-wider mb-4 uppercase font-bold">Control de Frizz Extremo</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE AGENDA DINÁMICA Y PRECIOS -->
+        <section id="agenda-interactiva" class="mb-24 max-w-3xl mx-auto reveal">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4 font-serif">Configura tu Cita</h2>
+                <div class="h-px w-24 bg-gold mx-auto"></div>
+                <p class="text-gray-500 text-xs mt-4 tracking-widest uppercase font-bold">Selecciona tu categoría, día y hora</p>
+            </div>
+
+            <div class="border border-gray-200 bg-white p-8 md:p-12 rounded-sm shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-bl-full pointer-events-none"></div>
+                
+                <form id="formulario-reserva" class="relative z-10 space-y-8">
+                    
+                    <!-- Selección de Categoría -->
+                    <div class="flex flex-col">
+                        <label for="categoria-largo" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">1. Longitud de tu Cabello</label>
+                        <select id="categoria-largo" class="w-full border-b-2 border-gray-200 py-3 text-gray-700 bg-transparent focus:outline-none focus:border-gold transition-colors text-lg font-serif appearance-none cursor-pointer">
+                            <option value="corto" data-precio="1200">Cabello Corto - Inversión: $1,200 MXN</option>
+                            <option value="mediano" data-precio="1800">Cabello Mediano - Inversión: $1,800 MXN</option>
+                            <option value="largo_abundante" data-precio="2300">Cabello Largo Abundante - Inversión: $2,300 MXN</option>
+                        </select>
                     </div>
 
-                    <input type="text" id="nombre-cliente" placeholder="Tu Nombre" required class="w-full px-4 py-3 border border-gray-300 rounded-sm focus:outline-none focus:border-gold bg-[#FAFAFA]">
-                    <textarea id="texto-resena" placeholder="¿Cómo fue tu experiencia en Davila Studio?" required rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-sm focus:outline-none focus:border-gold bg-[#FAFAFA] resize-none"></textarea>
-                    
-                    <button type="submit" class="w-full bg-gray-900 text-white font-bold py-3 uppercase tracking-widest text-sm hover:bg-gold hover:text-black transition-colors rounded-sm shadow-md">
-                        Publicar Reseña
-                    </button>
+                    <!-- Selección de Fecha y Hora -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="flex flex-col">
+                            <label for="fecha-cita" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">2. Fecha Deseada</label>
+                            <input type="date" id="fecha-cita" required class="w-full border-b-2 border-gray-200 py-3 text-gray-700 bg-transparent focus:outline-none focus:border-gold transition-colors font-serif">
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="hora-cita" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">3. Hora Deseada</label>
+                            <input type="time" id="hora-cita" required class="w-full border-b-2 border-gray-200 py-3 text-gray-700 bg-transparent focus:outline-none focus:border-gold transition-colors font-serif">
+                        </div>
+                    </div>
+
+                    <!-- Resumen y Botón -->
+                    <div class="pt-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div>
+                            <p class="text-gray-500 text-xs tracking-widest uppercase font-bold mb-1">Inversión Estimada</p>
+                            <p id="precio-mostrado" class="text-4xl text-gold-dark font-bold font-serif">$1200 <span class="text-sm font-sans text-gray-400">MXN</span></p>
+                        </div>
+                        
+                        <a id="btn-whatsapp-dinamico" href="#" target="_blank" class="w-full md:w-auto bg-gray-900 text-white font-bold py-4 px-10 rounded-sm shadow-xl hover:bg-gold hover:text-black transition-all duration-300 text-xs uppercase tracking-[0.2em] text-center flex items-center justify-center gap-3">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+                            </svg>
+                            Confirmar por WhatsApp
+                        </a>
+                    </div>
                 </form>
             </div>
         </section>
 
-        <!-- REDES Y AGENDA -->
-        <section id="agenda" class="flex flex-col items-center justify-center space-y-8 border-t border-gray-200 pt-16">
-            <h3 class="text-xl font-light text-gray-900 tracking-widest uppercase mb-4 text-center">Consulta General</h3>
-
-            <a href="https://wa.me/528680000000?text=Hola%20Davila%20Studio!%20Llegué%20desde%20Mystique%20y%20me%20gustaría%20información." target="_blank" rel="noopener noreferrer" class="w-full md:w-auto bg-gray-900 text-white font-bold py-4 px-12 rounded-sm shadow-xl hover:bg-gold hover:text-white hover:shadow-gold/30 transition-all duration-300 text-sm uppercase tracking-[0.2em] text-center flex items-center justify-center gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
-                </svg>
-                Agendar vía WhatsApp
-            </a>
-
-            <div class="flex items-center space-x-4 w-full max-w-xs opacity-60 my-4">
-                <div class="h-px bg-gray-400 flex-grow"></div>
-                <span class="text-xs font-bold tracking-widest text-gray-500">O VISITA REDES</span>
-                <div class="h-px bg-gray-400 flex-grow"></div>
+        <!-- SECCIÓN DE RESEÑAS -->
+        <section id="resenas" class="mb-24 max-w-4xl mx-auto reveal">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4 font-serif">Experiencias VIP</h2>
+                <div class="h-px w-24 bg-gold mx-auto"></div>
             </div>
-
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-full md:w-auto flex items-center justify-center gap-3 bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] p-[2px] rounded-sm group transition-all duration-300">
-                <div class="flex items-center justify-center gap-3 bg-white px-8 py-3 rounded-sm w-full group-hover:bg-transparent transition-all duration-300">
-                    <svg class="w-5 h-5 text-gray-800 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
-                    </svg>
-                    <span class="text-gray-800 text-sm font-bold uppercase tracking-widest group-hover:text-white transition-colors">Portafolio en Instagram</span>
-                </div>
-            </a>
+            <!-- Contenedor dinámico (Se llena con JS) -->
+            <div id="lista-resenas" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
         </section>
+        
     </main>
 
     <!-- ========== FOOTER ========== -->
-    <footer class="bg-gray-100 border-t border-gray-200 mt-16 py-8 text-center text-gray-400 text-sm">
-        <p>&copy; 2026 Mystique One. Todos los derechos reservados.</p>
+    <footer class="bg-gray-100 border-t border-gray-200 mt-20 py-10 text-center flex flex-col items-center justify-center">
+        <!-- Logo Onyx Footer -->
+        <svg viewBox="0 0 100 100" class="w-6 h-6 mb-3" style="filter: grayscale(100%); opacity: 0.5;">
+            <polygon points="50,45 55,50 50,55 45,50" fill="currentColor" />
+            <polygon points="42,5 7,40 42,75" fill="none" stroke="currentColor" stroke-width="2" />
+            <polygon points="58,25 93,60 58,95" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+        <p class="text-gray-400 text-[10px] tracking-widest uppercase font-bold">Powered by Mystery Onyx</p>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Efecto Lluvia de Oro (Intro)
             setTimeout(() => {
                 const linea = document.getElementById('linea-divisora');
                 if(linea) {
@@ -397,87 +417,102 @@
                 contenedorLluvia.appendChild(polvo);
             }
 
-            // LÓGICA DE RESEÑAS
-            const diamantes = document.querySelectorAll('.diamante');
-            let calificacionSeleccionada = 5;
-
-            diamantes.forEach(diamante => {
-                diamante.addEventListener('click', (e) => {
-                    calificacionSeleccionada = parseInt(e.currentTarget.getAttribute('data-valor'));
-                    actualizarDiamantesVisibles();
-                });
-            });
-
-            function actualizarDiamantesVisibles() {
-                diamantes.forEach(d => {
-                    const valor = parseInt(d.getAttribute('data-valor'));
-                    if(valor <= calificacionSeleccionada) {
-                        d.classList.replace('text-gray-300', 'text-gold');
-                    } else {
-                        d.classList.replace('text-gold', 'text-gray-300');
+            // 2. Intersection Observer (Animación de Revelado al bajar)
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
                     }
                 });
+            }, {
+                root: null,
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            });
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // 3. Lógica del Formulario de Reserva Dinámica
+            const selectCategoria = document.getElementById('categoria-largo');
+            const inputFecha = document.getElementById('fecha-cita');
+            const inputHora = document.getElementById('hora-cita');
+            const precioMostrado = document.getElementById('precio-mostrado');
+            const btnWhatsapp = document.getElementById('btn-whatsapp-dinamico');
+            
+            // Número de WhatsApp (Reemplazar por el real)
+            const numeroWhatsapp = "528680000000";
+
+            function actualizarReserva() {
+                // Actualizar Precio Visual
+                const opcionSeleccionada = selectCategoria.options[selectCategoria.selectedIndex];
+                const precio = opcionSeleccionada.getAttribute('data-precio');
+                const categoriaTexto = opcionSeleccionada.text.split(' - ')[0];
+                precioMostrado.innerHTML = `$${precio} <span class="text-sm font-sans text-gray-400">MXN</span>`;
+
+                // Construir Enlace de WhatsApp
+                let mensaje = `¡Hola Diana! Me gustaría agendar una cita en Davila Studio. %0A%0A`;
+                mensaje += `✨ *Servicio:* Alaciado para ${categoriaTexto} %0A`;
+                
+                if(inputFecha.value) {
+                    // Formatear fecha para que sea más legible
+                    const fechaObj = new Date(inputFecha.value + 'T00:00:00'); // Evitar desfase de zona horaria
+                    const fechaFormateada = fechaObj.toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    mensaje += `📅 *Día:* ${fechaFormateada} %0A`;
+                } else {
+                    mensaje += `📅 *Día:* Por definir %0A`;
+                }
+
+                if(inputHora.value) {
+                    mensaje += `⏰ *Hora:* ${inputHora.value} %0A`;
+                } else {
+                    mensaje += `⏰ *Hora:* Por definir %0A`;
+                }
+
+                mensaje += `💎 *Inversión aprox:* $${precio} MXN %0A%0A`;
+                mensaje += `¿Tendrás disponibilidad?`;
+
+                btnWhatsapp.href = `https://wa.me/${numeroWhatsapp}?text=${mensaje}`;
             }
 
+            // Escuchar cambios en los inputs para actualizar el enlace en tiempo real
+            selectCategoria.addEventListener('change', actualizarReserva);
+            inputFecha.addEventListener('change', actualizarReserva);
+            inputHora.addEventListener('change', actualizarReserva);
+            
+            // Inicializar enlace en carga
+            actualizarReserva();
+
+
+            // 4. Carga rápida de Reseñas (Demo visual)
             function crearHTMLResena(resena) {
                 let diamantesHTML = '';
                 for(let i=0; i<5; i++) {
-                    let colorClase = i < resena.calificacion ? 'text-gold' : 'text-gray-200';
-                    diamantesHTML += `<svg class="w-4 h-4 ${colorClase}" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25l-4.5 4.5h9l-4.5-4.5zM3 8.25l9 13.5 9-13.5H3z"/></svg>`;
+                    diamantesHTML += `<svg class="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25l-4.5 4.5h9l-4.5-4.5zM3 8.25l9 13.5 9-13.5H3z"/></svg>`;
                 }
                 return `
-                    <div class="bg-white border border-gray-100 p-6 rounded-sm shadow-sm fade-in-up">
+                    <div class="bg-white border border-gray-100 p-6 rounded-sm shadow-sm">
                         <div class="flex justify-between items-center mb-4 border-b border-gray-50 pb-2">
-                            <span class="font-bold text-gray-800 uppercase tracking-wider text-sm">${resena.nombre}</span>
+                            <span class="font-bold text-gray-800 uppercase tracking-wider text-xs font-serif">${resena.nombre}</span>
                             <div class="flex gap-1">${diamantesHTML}</div>
                         </div>
                         <p class="text-gray-600 italic font-light text-sm leading-relaxed">"${resena.texto}"</p>
-                        <span class="text-[10px] text-gray-400 mt-4 block uppercase tracking-widest">${resena.fecha}</span>
                     </div>
                 `;
             }
 
-            function cargarResenas() {
-                const lista = document.getElementById('lista-resenas');
-                let resenasGuardadas = JSON.parse(localStorage.getItem('davila_resenas'));
-                
-                if(!resenasGuardadas) {
-                    resenasGuardadas = [
-                        { nombre: "Fernanda G.", texto: "El mejor alaciado japonés que me han hecho. Mi cabello quedó como espejo, súper recomendado el servicio VIP.", calificacion: 5, fecha: "Hace 2 días" },
-                        { nombre: "Sofía M.", texto: "Excelente trato de Diana, me resolvió todas mis dudas y la keratina me duró muchísimo.", calificacion: 5, fecha: "Hace 1 semana" }
-                    ];
-                    localStorage.setItem('davila_resenas', JSON.stringify(resenasGuardadas));
-                }
-
+            const lista = document.getElementById('lista-resenas');
+            const resenasDemo = [
+                { nombre: "Fernanda G.", texto: "El mejor alaciado japonés que me han hecho. Mi cabello quedó como espejo, súper recomendado el servicio VIP." },
+                { nombre: "Sofía M.", texto: "Excelente trato de Diana, me resolvió todas mis dudas y la keratina me duró muchísimo." }
+            ];
+            
+            if(lista) {
                 lista.innerHTML = '';
-                resenasGuardadas.slice().reverse().forEach(resena => {
+                resenasDemo.forEach(resena => {
                     lista.innerHTML += crearHTMLResena(resena);
                 });
             }
-
-            document.getElementById('form-resena').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const nombre = document.getElementById('nombre-cliente').value;
-                const texto = document.getElementById('texto-resena').value;
-                
-                const nuevaResena = {
-                    nombre: nombre,
-                    texto: texto,
-                    calificacion: calificacionSeleccionada,
-                    fecha: "Justo ahora"
-                };
-
-                let resenasGuardadas = JSON.parse(localStorage.getItem('davila_resenas')) || [];
-                resenasGuardadas.push(nuevaResena);
-                localStorage.setItem('davila_resenas', JSON.stringify(resenasGuardadas));
-
-                document.getElementById('form-resena').reset();
-                calificacionSeleccionada = 5;
-                actualizarDiamantesVisibles();
-                cargarResenas();
-            });
-
-            cargarResenas();
         });
     </script>
 </body>
