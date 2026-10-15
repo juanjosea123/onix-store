@@ -1,439 +1,585 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Davila Beauty - Powered by Mystery Onyx</title>
-    <!-- Integración de Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Variables globales y colores personalizados */
+    <meta name="description" content="Davila Studio — Restauración Capilar de Alta Gama. Powered by Mystery Onyx.">
+    <title>Davila Studio | Powered by Mystery Onyx</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Hoja de Estilos 100% Propia (Sin Tailwind ni Frameworks) -->
+    <link rel="stylesheet" href="davila-style.css">
+
+    <!-- Respaldo embebido para previsualización interactiva directa -->
+    <style id="inline-preview-fallback">
         :root {
             --gold-primary: #D4AF37;
             --gold-light: #FBF5B7;
-            --gold-dark: #B5952F;
+            --gold-dark: #9A7B2C;
+            --gold-border: rgba(212, 175, 55, 0.35);
             --white-luxury: #FCFCFC;
+            --ivory-bg: #F8F6F1;
+            --onyx-dark: #111113;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --text-light-gray: #9CA3AF;
+            --border-light: #E5E7EB;
             --tema-estudio: #D4AF37;
+            --font-Title: 'Cinzel', serif;
+            --font-Quote: 'Cormorant Garamond', 'Georgia', serif;
+            --font-Body: 'Montserrat', sans-serif;
+            --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.06);
+            --shadow-elevated: 0 22px 50px rgba(17, 17, 19, 0.14);
+            --shadow-3d: 0 25px 55px rgba(0, 0, 0, 0.32);
         }
-
-        .text-gold { color: var(--gold-primary); }
-        .text-gold-dark { color: var(--gold-dark); }
-        .bg-gold { background-color: var(--gold-primary); }
-        .border-gold { border-color: var(--gold-primary); }
-        .font-quote { font-family: 'Georgia', serif; }
-
-        /* Efecto de metal dorado para el botón VIP */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--font-Body);
+            background-color: var(--white-luxury);
+            color: var(--text-main);
+            line-height: 1.65;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::selection { background-color: var(--gold-primary); color: #FFFFFF; }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+        .contenedor-principal { max-width: 1240px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10; }
+        .contenedor-medio { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+        .contenedor-angosto { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+        .pantalla-intro {
+            position: fixed; inset: 0; background-color: var(--white-luxury); z-index: 999;
+            display: flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none;
+            animation: salidaCinematica 1.1s cubic-bezier(0.4, 0, 0.2, 1) forwards; animation-delay: 2.3s;
+        }
+        .contenedor-particulas { position: absolute; inset: 0; z-index: 0; }
+        .contenedor-texto-premium {
+            position: relative; z-index: 10; text-align: center; display: flex; flex-direction: column;
+            align-items: center; padding: 0 16px; opacity: 0; transform: translateY(20px);
+            animation: revelacionElegante 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.3s;
+        }
+        .intro-subtitulo-sup { font-size: 0.65rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600; margin-bottom: 12px; }
+        .intro-titulo {
+            font-family: var(--font-Title); font-size: clamp(2.2rem, 5vw, 4rem); text-transform: uppercase; padding-bottom: 8px;
+            background: linear-gradient(-45deg, var(--gold-dark) 25%, var(--onyx-dark) 48%, var(--gold-primary) 72%);
+            background-size: 250% auto; color: transparent; -webkit-background-clip: text; background-clip: text;
+            animation: shine 3s ease-in-out forwards, expandirLetras 3.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.5s;
+        }
+        .linea-divisora-intro { height: 1px; width: 0; background-color: var(--gold-primary); margin: 16px 0; transition: width 1s ease-out; }
+        .linea-divisora-intro.activa { width: 140px; }
+        .intro-subtitulo-inf { color: var(--onyx-dark); font-size: clamp(1.1rem, 2.5vw, 1.6rem); letter-spacing: 0.55em; font-weight: 300; text-transform: uppercase; opacity: 0.9; }
+        .polvo-oro {
+            position: absolute; background: radial-gradient(circle, var(--gold-primary) 0%, var(--gold-light) 100%);
+            border-radius: 50%; box-shadow: 0 0 10px 2px rgba(212, 175, 55, 0.45);
+            animation: flotarPolvo linear forwards; opacity: 0;
+        }
+        .navbar-davila {
+            position: sticky; top: 0; z-index: 50; background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-light);
+            padding: 14px 48px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.03);
+        }
+        .marca-onyx { display: flex; align-items: center; gap: 12px; transition: opacity 0.3s ease; }
+        .marca-onyx:hover { opacity: 0.82; }
+        .icono-marca { width: 44px; height: 44px; filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.4)); }
+        .texto-marca { display: flex; flex-direction: column; justify-content: center; }
+        .marca-principal { font-family: var(--font-Title); font-size: 1.1rem; letter-spacing: 0.25em; font-weight: 700; color: var(--onyx-dark); line-height: 1; }
+        .marca-sub { font-size: 0.55rem; letter-spacing: 0.42em; font-weight: 600; color: var(--gold-dark); margin-top: 4px; }
+        .nav-enlaces { display: flex; align-items: center; gap: 32px; }
+        .nav-link-item { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-muted); font-weight: 600; transition: color 0.3s ease; }
+        .nav-link-item:hover { color: var(--gold-dark); }
+        .btn-onyx-luxury {
+            position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            background-color: var(--onyx-dark); color: #FFFFFF; font-weight: 700; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 0.2em; padding: 13px 28px; border-radius: 2px; border: 1px solid var(--onyx-dark);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12); transition: all 0.4s var(--ease-luxury); cursor: pointer; z-index: 1;
+        }
+        .btn-onyx-luxury::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #B5952F 100%);
+            opacity: 0; transition: opacity 0.4s var(--ease-luxury); z-index: -1;
+        }
+        .btn-onyx-luxury:hover { color: var(--onyx-dark); border-color: var(--gold-primary); box-shadow: 0 12px 28px rgba(212, 175, 55, 0.28); transform: translateY(-2px); }
+        .btn-onyx-luxury:hover::before { opacity: 1; }
+        .hero-davila { position: relative; background: linear-gradient(180deg, var(--ivory-bg) 0%, var(--white-luxury) 100%); border-bottom: 1px solid #F0EFEA; padding: 44px 24px 190px; overflow: hidden; }
+        .hero-resplandor { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 650px; height: 320px; background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, transparent 70%); filter: blur(45px); pointer-events: none; }
+        .hero-barra-superior { max-width: 1140px; margin: 0 auto 42px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; position: relative; z-index: 10; }
+        .link-volver { color: var(--text-muted); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.16em; display: inline-flex; align-items: center; gap: 8px; transition: color 0.3s ease, transform 0.3s ease; }
+        .link-volver:hover { color: var(--gold-dark); transform: translateX(-4px); }
         .vip-badge {
             background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+            position: relative; overflow: hidden; box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
+            color: #000000; font-weight: 800; padding: 8px 16px; border-radius: 2px; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.28em; display: inline-flex; align-items: center; gap: 8px; border: 1px solid #FFF2CD;
         }
-        
         .vip-badge::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg);
-            animation: destello 3s infinite;
+            content: ''; position: absolute; top: 0; left: -100%; width: 55%; height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.85) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: skewX(-25deg); animation: destello 3.2s infinite;
         }
-        
-        @keyframes destello {
-            0% { left: -100%; }
-            20% { left: 200%; }
-            100% { left: 200%; }
+        .icono-estrella { width: 14px; height: 14px; }
+        .hero-centro { max-width: 880px; margin: 24px auto 0; text-align: center; position: relative; z-index: 10; }
+        .etiqueta-superior { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.42em; color: var(--gold-dark); font-weight: 600; margin-bottom: 12px; }
+        .titulo-estudio { font-family: var(--font-Title); font-size: clamp(2.8rem, 7vw, 5.5rem); color: var(--onyx-dark); letter-spacing: 0.14em; text-transform: uppercase; line-height: 1.08; margin-bottom: 16px; }
+        .texto-dorado-metalico { background: linear-gradient(135deg, #9A7B2C 0%, #D4AF37 45%, #AA771C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 400; }
+        .subtitulo-estudio { color: var(--text-muted); letter-spacing: 0.35em; text-transform: uppercase; font-size: 0.8rem; font-weight: 600; margin-top: 20px; }
+        .seccion-diana { display: flex; align-items: center; justify-content: space-between; gap: 64px; margin-top: -125px; margin-bottom: 120px; }
+        .columna-mitad { width: 50%; }
+        .perspectiva { perspective: 1400px; }
+        .grupo-3d { position: relative; cursor: pointer; }
+        .marco-3d { position: absolute; inset: 0; border: 1px solid rgba(212, 175, 55, 0.6); border-radius: 3px; background-color: var(--ivory-bg); z-index: 0; transition: transform 0.65s var(--ease-luxury), border-color 0.65s ease; }
+        .tarjeta-3d { position: relative; z-index: 10; background-color: #FFFFFF; overflow: hidden; border-radius: 3px; box-shadow: var(--shadow-elevated); transition: transform 0.65s var(--ease-luxury), box-shadow 0.65s var(--ease-luxury); transform-style: preserve-3d; }
+        .grupo-3d:hover .tarjeta-3d { transform: rotateY(7deg) rotateX(3deg) scale(1.015); box-shadow: -22px 24px 45px rgba(17, 17, 19, 0.18); }
+        .grupo-3d:hover .marco-3d { transform: translate3d(18px, -18px, -40px); border-color: var(--gold-primary); }
+        .foto-diana { width: 100%; height: 550px; object-fit: cover; object-position: top; filter: contrast(1.05); }
+        .overlay-oscuro-inferior { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%); }
+        .info-sobre-foto { position: absolute; bottom: 32px; left: 32px; right: 32px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+        .cargo-diana { color: var(--gold-primary); font-weight: 700; letter-spacing: 0.28em; font-size: 0.65rem; text-transform: uppercase; margin-bottom: 6px; }
+        .nombre-diana { color: #FFFFFF; font-size: 2.1rem; font-family: var(--font-Title); letter-spacing: 0.14em; }
+        .sello-diagnostico { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.22em; color: rgba(255, 255, 255, 0.92); border: 1px solid rgba(212, 175, 55, 0.5); background-color: rgba(0, 0, 0, 0.55); backdrop-filter: blur(4px); padding: 6px 12px; border-radius: 2px; }
+        .encabezado-conoce { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em; color: var(--gold-dark); margin-bottom: 22px; display: flex; align-items: center; gap: 16px; }
+        .linea-conoce { width: 40px; height: 1px; background-color: var(--gold-primary); }
+        .cita-diana { font-family: var(--font-Quote); font-size: clamp(1.9rem, 3.5vw, 2.85rem); line-height: 1.18; color: var(--text-main); font-style: italic; margin-bottom: 28px; position: relative; }
+        .comilla-decorativa { color: var(--gold-primary); font-size: 4.5rem; position: absolute; top: -32px; left: -24px; opacity: 0.25; font-family: Georgia, serif; user-select: none; }
+        .saludo-diana { font-weight: 700; color: var(--onyx-dark); font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.15em; line-height: 1.6; margin-bottom: 22px; }
+        .saludo-destacado { display: block; margin-top: 8px; font-family: var(--font-Title); font-size: clamp(1.4rem, 2.5vw, 1.9rem); }
+        .bio-diana { color: var(--text-muted); font-size: 0.96rem; line-height: 1.75; margin-bottom: 32px; }
+        .metricas-diana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding-top: 24px; border-top: 1px solid var(--border-light); }
+        .metrica-numero { font-family: var(--font-Title); font-size: 1.7rem; font-weight: 700; color: var(--onyx-dark); }
+        .metrica-etiqueta { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-muted); font-weight: 600; margin-top: 4px; }
+        .seccion-portafolio-3d { margin-bottom: 120px; padding-top: 64px; border-top: 1px solid var(--border-light); }
+        .encabezado-seccion { text-align: center; margin-bottom: 80px; }
+        .titulo-seccion { font-family: var(--font-Title); font-size: clamp(1.8rem, 3.8vw, 2.75rem); letter-spacing: 0.18em; font-weight: 400; color: var(--onyx-dark); text-transform: uppercase; margin-bottom: 16px; }
+        .divisor-dorado { height: 1px; width: 96px; background-color: var(--gold-primary); margin: 0 auto 24px; }
+        .descripcion-seccion { color: var(--text-muted); max-width: 660px; margin: 0 auto; font-size: 0.96rem; line-height: 1.75; }
+        .fila-portafolio { display: flex; align-items: center; gap: 72px; margin-bottom: 120px; }
+        .fila-portafolio.inversa { flex-direction: row-reverse; }
+        .fila-portafolio:last-child { margin-bottom: 40px; }
+        .vista-3d { width: 50%; display: flex; justify-content: center; align-items: center; padding: 40px 0; position: relative; perspective: 2000px; transform-style: preserve-3d; cursor: pointer; }
+        .halo-ambiental { position: absolute; inset: 0; background: radial-gradient(circle, rgba(212, 175, 55, 0.14) 0%, transparent 70%); border-radius: 50%; filter: blur(40px); transform: scale(1.2); z-index: 0; pointer-events: none; }
+        .capa-3d-base { position: relative; width: 310px; height: 460px; z-index: 10; transition: transform 0.65s var(--ease-luxury); transform-style: preserve-3d; will-change: transform; }
+        .capa-3d-profunda { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 3px; box-shadow: var(--shadow-soft); transition: transform 0.75s var(--ease-luxury), opacity 0.75s ease, filter 0.75s ease; transform: translateZ(-80px) rotate(-6deg) translateX(22px) scale(0.95); opacity: 0.72; filter: brightness(0.65) saturate(0.85); }
+        .placa-oscura-profunda { background-color: var(--onyx-dark); border: 1px solid var(--gold-border); display: flex; align-items: center; justify-content: center; }
+        .capa-3d-flotante { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 3px; border: 4px solid #FFFFFF; box-shadow: var(--shadow-3d); transition: transform 0.65s var(--ease-luxury), box-shadow 0.65s var(--ease-luxury); transform: translateZ(50px); will-change: transform; }
+        .sello-flotante-3d { position: absolute; background-color: var(--onyx-dark); color: var(--gold-primary); padding: 16px; border-radius: 3px; box-shadow: 0 18px 38px rgba(0, 0, 0, 0.35); border: 1px solid var(--gold-border); display: flex; align-items: center; gap: 12px; transition: transform 0.65s var(--ease-luxury); transform: translateZ(95px); }
+        .sello-pos-1 { right: -36px; bottom: -30px; }
+        .sello-pos-2 { left: -36px; top: -24px; background-color: #FFFFFF; color: var(--onyx-dark); }
+        .sello-pos-3 { right: -36px; top: 50%; transform: translateY(-50%) translateZ(95px); flex-direction: column; text-align: center; }
+        .sello-numero { font-family: var(--font-Title); font-size: 1.5rem; padding-right: 12px; border-right: 1px solid rgba(255, 255, 255, 0.2); }
+        .sello-pos-2 .sello-numero { border-right-color: var(--border-light); color: var(--gold-dark); }
+        .sello-pos-3 .sello-numero { padding-right: 0; border-right: none; padding-bottom: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+        .sello-texto { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 700; color: #FFFFFF; line-height: 1.4; }
+        .sello-pos-2 .sello-texto { color: var(--text-main); }
+        .vista-3d:hover .capa-3d-base { transform: rotateY(15deg) rotateX(4deg); }
+        .vista-3d:hover .capa-3d-flotante { transform: translateZ(110px) translateY(-8px) scale(1.04); box-shadow: -25px 25px 50px rgba(0, 0, 0, 0.38); }
+        .vista-3d:hover .sello-flotante-3d { transform: translateZ(145px) translateY(-10px) scale(1.06); }
+        .vista-3d:hover .sello-pos-3 { transform: translateY(-50%) translateZ(145px) scale(1.06); }
+        .vista-3d:hover .capa-3d-profunda { transform: translateZ(-120px) rotate(-10deg) translateX(48px) scale(0.9); opacity: 0.45; }
+        .vista-3d.inversa:hover .capa-3d-base { transform: rotateY(-15deg) rotateX(4deg); }
+        .vista-3d.inversa:hover .capa-3d-flotante { transform: translateZ(110px) translateY(-8px) scale(1.04); box-shadow: 25px 25px 50px rgba(0, 0, 0, 0.38); }
+        .vista-3d.inversa:hover .capa-3d-profunda { transform: translateZ(-120px) rotate(10deg) translateX(-48px) scale(0.9); opacity: 0.45; }
+        .columna-explicativa { width: 50%; position: relative; z-index: 20; }
+        .letra-fondo { font-family: var(--font-Title); font-size: 4.5rem; color: var(--gold-primary); opacity: 0.15; position: absolute; top: -42px; left: -18px; pointer-events: none; user-select: none; }
+        .etiqueta-inversion { display: inline-block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.24em; color: var(--gold-dark); background-color: var(--ivory-bg); border: 1px solid var(--gold-border); padding: 5px 12px; border-radius: 2px; margin-bottom: 12px; }
+        .titulo-largo { font-family: var(--font-Title); font-size: clamp(1.8rem, 3vw, 2.35rem); color: var(--onyx-dark); margin-bottom: 8px; }
+        .subtitulo-tecnica { font-size: 0.8rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 700; color: var(--gold-dark); margin-bottom: 22px; }
+        .parrafo-portafolio { color: var(--text-muted); margin-bottom: 20px; line-height: 1.75; }
+        .bloque-destacado-portafolio { color: var(--text-main); border-left: 2px solid var(--gold-primary); background-color: #FAF9F5; padding: 14px 18px; font-style: italic; margin-bottom: 24px; line-height: 1.75; }
+        .link-seleccionar-protocolo { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--onyx-dark); border-bottom: 1px solid var(--gold-primary); padding-bottom: 4px; transition: color 0.3s ease, gap 0.3s ease; }
+        .link-seleccionar-protocolo:hover { color: var(--gold-dark); gap: 14px; }
+        .seccion-agenda { margin-bottom: 110px; }
+        .tarjeta-formulario { border: 1px solid var(--gold-border); background-color: #FFFFFF; padding: 48px; border-radius: 3px; box-shadow: var(--shadow-elevated); position: relative; overflow: hidden; }
+        .decoracion-esquina-form { position: absolute; top: 0; right: 0; width: 160px; height: 160px; background-color: rgba(212, 175, 55, 0.08); border-bottom-left-radius: 100%; pointer-events: none; }
+        .formulario-reserva { position: relative; z-index: 10; display: flex; flex-direction: column; gap: 32px; }
+        .grupo-campo { display: flex; flex-direction: column; }
+        .etiqueta-campo { color: var(--onyx-dark); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+        .paso-circulo { width: 24px; height: 24px; border-radius: 50%; background-color: var(--onyx-dark); color: var(--gold-primary); font-size: 0.75rem; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-Title); }
+        .select-luxury-wrapper { position: relative; }
+        .select-luxury-wrapper::after { content: '▾'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--gold-dark); font-size: 1rem; pointer-events: none; transition: transform 0.3s ease; }
+        .select-luxury-wrapper:focus-within::after { transform: translateY(-50%) rotate(180deg); }
+        .input-linea { width: 100%; border: none; border-bottom: 2px solid var(--border-light); padding: 14px 36px 14px 0; color: var(--text-main); background-color: transparent; font-family: var(--font-Title); font-size: 1.08rem; appearance: none; cursor: pointer; transition: border-color 0.3s ease; }
+        .input-linea:focus { outline: none; border-bottom-color: var(--gold-primary); }
+        .nota-beneficio { font-size: 0.78rem; color: var(--text-muted); font-style: italic; margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--gold-border); }
+        .grid-dos-columnas { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+        .pie-formulario { padding-top: 32px; border-top: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+        .encabezado-inversion { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+        .texto-inversion-label { color: var(--text-muted); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; }
+        .pildora-duracion { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; background-color: var(--ivory-bg); color: var(--gold-dark); border: 1px solid var(--gold-border); padding: 3px 10px; border-radius: 2px; font-weight: 600; }
+        .precio-grande { font-family: var(--font-Title); font-size: clamp(2.2rem, 4vw, 3rem); color: var(--gold-dark); font-weight: 700; }
+        .moneda-mxn { font-family: var(--font-Body); font-size: 0.85rem; color: var(--text-light-gray); font-weight: 400; }
+        .price-animate { animation: pricePop 0.4s var(--ease-luxury); }
+        .seccion-resenas { margin-bottom: 96px; }
+        .grid-resenas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .tarjeta-resena { background-color: #FFFFFF; border: 1px solid var(--border-light); padding: 28px; border-radius: 3px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.35s var(--ease-luxury); }
+        .tarjeta-resena:hover { border-color: var(--gold-primary); transform: translateY(-5px); box-shadow: var(--shadow-elevated); }
+        .cabecera-resena { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #F3F4F6; }
+        .autora-resena { font-family: var(--font-Title); font-weight: 700; color: var(--onyx-dark); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.78rem; display: block; }
+        .tratamiento-resena { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold-dark); font-weight: 600; }
+        .diamantes-calificacion { display: flex; gap: 4px; }
+        .icono-diamante { width: 14px; height: 14px; color: var(--gold-primary); }
+        .texto-resena { color: var(--text-muted); font-style: italic; font-weight: 300; font-size: 0.9rem; line-height: 1.7; margin-bottom: 16px; }
+        .sello-verificado { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-light-gray); font-weight: 600; }
+        .footer-davila { background-color: #F5F3EE; border-top: 1px solid var(--border-light); margin-top: 80px; padding: 48px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .icono-footer { width: 32px; height: 32px; margin-bottom: 12px; color: var(--gold-dark); }
+        .footer-titulo { font-family: var(--font-Title); font-size: 0.9rem; letter-spacing: 0.25em; color: var(--onyx-dark); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+        .footer-sub { color: var(--text-muted); font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 600; }
+        .reveal { opacity: 0; transform: translateY(42px); transition: opacity 0.85s var(--ease-luxury), transform 0.85s var(--ease-luxury); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        @keyframes destello { 0% { left: -100%; } 22% { left: 200%; } 100% { left: 200%; } }
+        @keyframes salidaCinematica { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.04); visibility: hidden; pointer-events: none; } }
+        @keyframes revelacionElegante { 0% { opacity: 0; transform: translateY(20px); filter: blur(4px); } 100% { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        @keyframes shine { 0% { background-position: 200% center; } 100% { background-position: -50% center; } }
+        @keyframes expandirLetras { 0% { letter-spacing: 0.25em; } 100% { letter-spacing: 0.48em; } }
+        @keyframes flotarPolvo { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 20% { opacity: 0.85; } 80% { opacity: 0.5; } 100% { transform: translateY(-95vh) scale(1.2); opacity: 0; } }
+        @keyframes pricePop { 0% { transform: scale(1); } 40% { transform: scale(1.08); color: var(--gold-primary); } 100% { transform: scale(1); } }
+        @media (max-width: 992px) {
+            .seccion-diana, .fila-portafolio, .fila-portafolio.inversa { flex-direction: column; gap: 48px; text-align: center; }
+            .columna-mitad, .vista-3d, .columna-explicativa { width: 100%; }
+            .encabezado-conoce { justify-content: center; }
+            .grid-resenas { grid-template-columns: 1fr; }
         }
-
-        /* Animaciones Cinemáticas de Intro */
-        .pantalla-intro {
-            animation: salidaCinematica 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            animation-delay: 2.5s; 
-        }
-        @keyframes salidaCinematica {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(1.03); visibility: hidden; pointer-events: none; }
-        }
-
-        .contenedor-texto-premium {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: revelacionElegante 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-            animation-delay: 0.5s;
-        }
-        @keyframes revelacionElegante {
-            0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
-            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-
-        .shimmer-text {
-            background: linear-gradient(-45deg, var(--gold-dark) 30%, #FFFFFF 50%, var(--gold-dark) 70%);
-            background-size: 250% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: shine 3.5s ease-in-out forwards;
-            animation-delay: 1s;
-        }
-        @keyframes shine {
-            0% { background-position: 200% center; }
-            100% { background-position: -50% center; }
-        }
-
-        .tracking-expand {
-            animation: expandirLetras 4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-        @keyframes expandirLetras {
-            0% { letter-spacing: 0.3em; }
-            100% { letter-spacing: 0.5em; }
-        }
-
-        .polvo-oro {
-            position: absolute;
-            background-color: var(--gold-light);
-            border-radius: 50%;
-            box-shadow: 0 0 8px 2px rgba(212, 175, 55, 0.4);
-            animation: flotarPolvo linear forwards;
-            opacity: 0;
-        }
-        @keyframes flotarPolvo {
-            0% { transform: translateY(0) scale(0.5); opacity: 0; }
-            20% { opacity: 0.8; }
-            80% { opacity: 0.5; }
-            100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
-        }
-
-        /* --- CLASES 3D DIANA --- */
-        .perspectiva { perspective: 1200px; }
-        .tarjeta-3d {
-            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s;
-            transform-style: preserve-3d;
-        }
-        .grupo-3d:hover .tarjeta-3d {
-            transform: rotateY(8deg) rotateX(4deg) scale(1.02);
-            box-shadow: -20px 20px 30px rgba(0,0,0,0.1);
-        }
-        .marco-3d { transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .grupo-3d:hover .marco-3d { transform: translate3d(20px, -20px, -50px); }
-
-        /* --- NUEVAS CLASES PARA EXPERIENCIA VISUAL TRIDIMENSIONAL DEL PORTAFOLIO --- */
-        .vista-3d {
-            perspective: 2000px;
-            transform-style: preserve-3d;
-            cursor: crosshair;
-        }
-        .capa-3d-base {
-            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-        .capa-3d-flotante {
-            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.8s;
-            transform: translateZ(50px);
-        }
-        .capa-3d-profunda {
-            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s;
-            transform: translateZ(-80px) rotate(-6deg) translateX(20px) scale(0.95);
-            opacity: 0.7;
-            filter: brightness(0.6);
-        }
-        
-        /* Hover Vista Normal */
-        .vista-3d:hover .capa-3d-base { transform: rotateY(18deg) rotateX(5deg); }
-        .vista-3d:hover .capa-3d-flotante {
-            transform: translateZ(120px) translateY(-10px) scale(1.05);
-            box-shadow: -25px 25px 45px rgba(0,0,0,0.4);
-        }
-        .vista-3d:hover .capa-3d-profunda {
-            transform: translateZ(-120px) rotate(-10deg) translateX(50px) scale(0.9);
-            opacity: 0.4;
-        }
-
-        /* Hover Vista Inversa (Para intercalar el diseño) */
-        .vista-3d.inversa:hover .capa-3d-base { transform: rotateY(-18deg) rotateX(5deg); }
-        .vista-3d.inversa:hover .capa-3d-flotante {
-            transform: translateZ(120px) translateY(-10px) scale(1.05);
-            box-shadow: 25px 25px 45px rgba(0,0,0,0.4);
-        }
-        .vista-3d.inversa:hover .capa-3d-profunda {
-            transform: translateZ(-120px) rotate(10deg) translateX(-50px) scale(0.9);
-            opacity: 0.4;
-        }
-
-        /* --- EFECTO SCROLL REVEAL --- */
-        .reveal { 
-            opacity: 0; 
-            transform: translateY(50px); 
-            transition: all 0.9s cubic-bezier(0.5, 0, 0, 1); 
-        }
-        .reveal.active { 
-            opacity: 1; 
-            transform: translateY(0); 
+        @media (max-width: 768px) {
+            .navbar-davila { padding: 12px 20px; }
+            .nav-enlaces { display: none; }
+            .grid-dos-columnas { grid-template-columns: 1fr; }
+            .pie-formulario { flex-direction: column; text-align: center; }
+            .encabezado-inversion { justify-content: center; }
+            .tarjeta-formulario { padding: 28px 20px; }
+            .btn-onyx-luxury { width: 100%; }
+            .capa-3d-base { width: 260px; height: 390px; }
         }
     </style>
 </head>
-<body class="bg-[#FCFCFC] text-gray-800 font-sans antialiased overflow-x-hidden selection:bg-[#D4AF37] selection:text-white">
+<body>
 
     <!-- ========== PANTALLA DE INTRODUCCIÓN CINEMÁTICA ========== -->
-    <div id="intro-premium" class="fixed inset-0 bg-[#FCFCFC] z-[999] flex items-center justify-center pantalla-intro overflow-hidden pointer-events-none">
-        <div id="contenedor-particulas" class="absolute inset-0 z-0"></div>
-        <div class="contenedor-texto-premium text-center relative z-10 flex flex-col items-center">
-            <h1 class="text-4xl md:text-6xl font-serif shimmer-text tracking-expand uppercase drop-shadow-sm pb-2">
-                Trabajo
-            </h1>
-            <div class="h-[1px] w-0 bg-gold my-4 transition-all duration-1000 ease-out" id="linea-divisora"></div>
-            <h2 class="text-gray-900 text-2xl md:text-3xl tracking-[0.6em] font-light uppercase drop-shadow-sm opacity-90">
-                Premium
-            </h2>
+    <div id="intro-premium" class="pantalla-intro" aria-hidden="true">
+        <div id="contenedor-particulas" class="contenedor-particulas"></div>
+        <div class="contenedor-texto-premium">
+            <span class="intro-subtitulo-sup">Mystery Onyx Presenta</span>
+            <h1 class="intro-titulo">Davila Studio</h1>
+            <div id="linea-divisora" class="linea-divisora-intro"></div>
+            <h2 class="intro-subtitulo-inf">Trabajo Premium</h2>
         </div>
     </div>
 
-    <!-- ========== NAVBAR GLOBAL (MYSTERY ONYX) ========== -->
-    <header class="border-b border-gray-200 py-3 px-6 md:px-12 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur z-50 shadow-sm">
-        <a class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition duration-300" href="#" style="text-decoration: none;">
-            <svg viewBox="0 0 100 100" class="w-10 h-10 md:w-12 md:h-12" style="filter: drop-shadow(0 0 4px rgba(212,175,55,0.4));">
+    <!-- ========== NAVBAR GLOBAL (SIN TAILWIND) ========== -->
+    <header class="navbar-davila">
+        <a class="marca-onyx" href="index.html" aria-label="Volver a Mystery Onyx">
+            <svg viewBox="0 0 100 100" class="icono-marca">
                 <polygon points="42,5 7,40 42,75" fill="none" stroke="var(--tema-estudio)" stroke-width="2.5" stroke-linejoin="bevel" />
                 <polygon points="58,25 93,60 58,95" fill="none" stroke="var(--tema-estudio)" stroke-width="2.5" stroke-linejoin="bevel" />
                 <polygon points="50,45 55,50 50,55 45,50" fill="var(--tema-estudio)" />
                 <line x1="42" y1="5" x2="58" y2="25" stroke="var(--tema-estudio)" stroke-width="1.5" stroke-dasharray="2 4" />
                 <line x1="42" y1="75" x2="58" y2="95" stroke="var(--tema-estudio)" stroke-width="1.5" stroke-dasharray="2 4" />
             </svg>
-            <div class="flex flex-col justify-center">
-                <span style="font-family: 'Cinzel', serif;" class="text-base md:text-lg tracking-[0.25em] font-bold text-gray-900 leading-none">MYSTERY</span>
-                <span class="text-[0.45rem] md:text-[0.55rem] tracking-[0.4em] font-sans text-gold mt-1">ONYX</span>
+            <div class="texto-marca">
+                <span class="marca-principal">MYSTERY</span>
+                <span class="marca-sub">ONYX ECOSYSTEM</span>
             </div>
         </a>
-        <nav class="hidden md:flex space-x-8 text-gray-600 font-medium tracking-wide">
-            <a href="#" class="hover:text-gold-dark transition duration-300">Inicio</a>
-            <a href="#experiencia-3d" class="hover:text-gold-dark transition duration-300">Portafolio</a>
+
+        <nav class="nav-enlaces" aria-label="Navegación de estudio">
+            <a href="#conoceme" class="nav-link-item">Directora</a>
+            <a href="#experiencia-3d" class="nav-link-item">Portafolio 3D</a>
+            <a href="#resenas" class="nav-link-item">Testimonios</a>
         </nav>
+
         <div>
-            <a href="#agenda-interactiva" class="bg-gray-900 text-white font-bold py-3 px-8 rounded-sm shadow-md hover:bg-gold hover:text-black transition duration-300 uppercase text-xs tracking-widest inline-block">
-                Agendar
-            </a>
+            <a href="#agenda-interactiva" class="btn-onyx-luxury">Agendar Cita</a>
         </div>
     </header>
 
     <!-- ========== ENCABEZADO VIP ========== -->
-    <section class="bg-[#FAFAFA] border-b border-gray-100 pt-12 pb-48 px-6 relative">
-        <div class="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] pointer-events-none"></div>
-        <div class="max-w-6xl mx-auto mb-10 flex justify-between items-center relative z-10">
-            <a href="index.html" class="text-gray-500 hover:text-gold-dark transition font-bold text-xs uppercase tracking-widest flex items-center gap-2">
-                &larr; Volver al catálogo
-            </a>
-            <span class="vip-badge text-black font-black px-4 py-2 rounded-sm text-[10px] md:text-xs uppercase tracking-[0.3em] flex items-center gap-2 border border-[#FFF2CD]">
-                <svg class="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
+    <section class="hero-davila">
+        <div class="hero-resplandor"></div>
+
+        <div class="hero-barra-superior">
+            <a href="index.html" class="link-volver">&larr; Volver al catálogo Onyx</a>
+            <span class="vip-badge">
+                <svg class="icono-estrella" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                 </svg>
-                Premium Onyx
+                Estudio Verificado &bull; Premium Onyx
             </span>
         </div>
 
-        <div class="max-w-4xl mx-auto text-center relative z-10 mt-6">
-            <h1 class="text-6xl md:text-8xl font-serif text-gray-900 mb-2 tracking-widest uppercase" style="font-family: 'Cinzel', serif;">
-                Davila <span class="text-gold font-light">Studio</span>
+        <div class="hero-centro">
+            <span class="etiqueta-superior">Alta Cosmetología Capilar</span>
+            <h1 class="titulo-estudio">
+                Davila <span class="texto-dorado-metalico">Studio</span>
             </h1>
-            <p class="text-gray-500 tracking-[0.4em] uppercase text-xs md:text-sm mt-6 font-bold">Restauración Capilar de Alta Gama</p>
+            <p class="subtitulo-estudio">Arquitectura, Alaciado Orgánico &amp; Restauración de Alta Gama</p>
         </div>
     </section>
 
-    <!-- ========== PRESENTACIÓN DIANA ========== -->
-    <main class="max-w-7xl mx-auto px-6 relative z-10 pb-10">
-        
-        <div class="flex flex-col md:flex-row items-center justify-between gap-16 -mt-32 mb-32 reveal">
-            <div class="w-full md:w-1/2 perspectiva grupo-3d relative cursor-pointer">
-                <div class="absolute inset-0 border border-gold/50 rounded-sm marco-3d z-0 bg-[#FAFAFA]"></div>
-                <div class="relative tarjeta-3d z-10 bg-white overflow-hidden rounded-sm shadow-xl">
-                    <img src="Davila Persona.jfif" alt="Diana - Especialista Capilar" class="w-full h-[550px] object-cover object-top filter contrast-[1.1] grayscale-[0.2]">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
-                    <div class="absolute bottom-8 left-8">
-                        <p class="text-gold font-bold tracking-[0.3em] text-[10px] uppercase mb-2 drop-shadow-md">Directora Creativa</p>
-                        <h3 class="text-white text-3xl font-serif tracking-widest">Diana Davila</h3>
+    <!-- ========== CONTENIDO PRINCIPAL ========== -->
+    <main class="contenedor-principal">
+
+        <!-- PRESENTACIÓN DIANA DAVILA -->
+        <section id="conoceme" class="seccion-diana reveal">
+            <div class="columna-mitad perspectiva grupo-3d">
+                <div class="marco-3d"></div>
+                <div class="tarjeta-3d">
+                    <img src="Davila Persona.jfif"
+                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=900&q=85';"
+                         alt="Diana Davila - Especialista en Restauración Capilar"
+                         class="foto-diana">
+                    <div class="overlay-oscuro-inferior"></div>
+                    <div class="info-sobre-foto">
+                        <div>
+                            <p class="cargo-diana">Directora Creativa &amp; Master en Alaciados</p>
+                            <h2 class="nombre-diana">Diana Davila</h2>
+                        </div>
+                        <span class="sello-diagnostico">Diagnóstico 1 a 1</span>
                     </div>
                 </div>
             </div>
 
-            <div class="w-full md:w-1/2 text-center md:text-left">
-                <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-gray-400 mb-6 flex items-center justify-center md:justify-start gap-4">
-                    <div class="w-8 h-px bg-gray-300"></div>
-                    Conóceme
-                </h3>
-                <p class="font-quote text-2xl md:text-4xl leading-tight text-gray-800 italic mb-8 relative">
-                    <span class="text-gold text-6xl absolute -top-6 -left-6 opacity-30 font-serif">"</span>
-                    ¿Tienes dudas? ¿Quieres saber por qué te puede llegar a poner feo el cabello?
+            <div class="columna-mitad">
+                <div class="encabezado-conoce">
+                    <span class="linea-conoce"></span>
+                    <span>Conoce a tu Especialista</span>
+                </div>
+
+                <blockquote class="cita-diana">
+                    <span class="comilla-decorativa">&ldquo;</span>
+                    ¿Tienes dudas? ¿Quieres saber por qué se puede llegar a maltratar o poner opaco tu cabello?
+                </blockquote>
+
+                <p class="saludo-diana">
+                    Hola, soy Diana.
+                    <span class="texto-dorado-metalico saludo-destacado">Llegaste con la persona indicada.</span>
                 </p>
-                <p class="font-bold text-gray-900 text-lg md:text-xl uppercase tracking-[0.15em] leading-relaxed">
-                    Hola, soy Diana.<br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold to-gold-dark text-2xl md:text-3xl block mt-2">Llegaste con la persona indicada.</span>
+
+                <p class="bio-diana">
+                    Cada cabellera tiene un historial químico y una porosidad única. En <strong>Davila Studio</strong> no aplicamos fórmulas genéricas: diseñamos un protocolo a medida que transforma la fibra capilar sin sacrificar su salud ni su movimiento natural.
                 </p>
-            </div>
-        </div>
 
-        <!-- ==========================================
-             NUEVA EXPERIENCIA VISUAL 3D (PORTAFOLIO)
-             ========================================== -->
-        <section id="experiencia-3d" class="mb-32 pt-16 border-t border-gray-100 overflow-hidden">
-            <div class="text-center mb-24 reveal">
-                <h2 class="text-3xl md:text-4xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4 font-serif">Arte Capilar en 3D</h2>
-                <div class="h-px w-24 bg-gold mx-auto mb-6"></div>
-                <p class="text-gray-500 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-                    Explora nuestra galería inmersiva. Pase el cursor sobre los marcos para descubrir cómo la <span class="text-gold-dark font-bold">Nanoplastia</span>, el <span class="text-gold-dark font-bold">Botox Capilar</span> y <span class="text-gold-dark font-bold">Luminoliss</span> transforman la arquitectura de cada tipo de cabello.
-                </p>
-            </div>
-
-            <!-- APARTADO 1: CABELLO CORTO -->
-            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-20 mb-32 reveal">
-                <!-- Marco Tridimensional -->
-                <div class="w-full md:w-1/2 vista-3d flex justify-center items-center py-10 relative">
-                    <div class="absolute inset-0 bg-gold/5 rounded-full blur-3xl transform scale-150 z-0 opacity-50"></div>
-                    <div class="capa-3d-base relative w-64 md:w-80 h-[400px] md:h-[480px] z-10">
-                        <!-- Foto Posterior (Fondo) -->
-                        <img src="pelo corto 2.jfif" alt="Reflejo Sedosidad" class="absolute inset-0 w-full h-full object-cover rounded-sm capa-3d-profunda shadow-lg">
-                        <!-- Foto Frontal (Principal) -->
-                        <img src="pelo corto.jfif" alt="Alaciado Cabello Corto" class="absolute inset-0 w-full h-full object-cover rounded-sm capa-3d-flotante shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-4 border-white">
-                        
-                        <!-- Elemento flotante decorativo -->
-                        <div class="absolute -right-10 -bottom-10 bg-gray-900 text-gold p-4 rounded-sm shadow-xl capa-3d-flotante flex items-center gap-3">
-                            <span class="font-serif italic text-2xl border-r border-gray-700 pr-3">01</span>
-                            <span class="text-[10px] tracking-widest uppercase font-bold">Movimiento<br>Puro</span>
-                        </div>
+                <div class="metricas-diana">
+                    <div>
+                        <p class="metrica-numero">100%</p>
+                        <p class="metrica-etiqueta">Fórmulas Premium</p>
                     </div>
-                </div>
-                
-                <!-- Texto Explicativo -->
-                <div class="w-full md:w-1/2 text-center md:text-left relative z-20">
-                    <div class="text-gold text-6xl font-serif opacity-20 absolute -top-10 -left-6 pointer-events-none">C</div>
-                    <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-2 relative">Cabello Corto</h3>
-                    <h4 class="text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-gold-dark mb-6">Botox Capilar & Nanoplastia</h4>
-                    <p class="text-gray-600 leading-relaxed mb-6">
-                        En longitudes cortas, el objetivo es evitar la rigidez. Aplicamos <strong>Botox Capilar</strong> para inyectar hidratación profunda y rejuvenecer la fibra desde la raíz. 
-                    </p>
-                    <p class="text-gray-600 leading-relaxed border-l-2 border-gold/30 pl-4 italic">
-                        La fusión con <strong>Nanoplastia</strong> permite alisar el cabello rebelde conservando un volumen controlado y un acabado sedoso, garantizando un estilo dinámico y libre de frizz.
-                    </p>
-                </div>
-            </div>
-
-            <!-- APARTADO 2: CABELLO MEDIANO (INVERSO) -->
-            <div class="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-20 mb-32 reveal">
-                <!-- Marco Tridimensional Inverso -->
-                <div class="w-full md:w-1/2 vista-3d inversa flex justify-center items-center py-10 relative">
-                    <div class="absolute inset-0 bg-gray-200/50 rounded-full blur-3xl transform scale-150 z-0 opacity-50"></div>
-                    <div class="capa-3d-base relative w-64 md:w-80 h-[400px] md:h-[480px] z-10">
-                        <!-- Placa Decorativa Posterior -->
-                        <div class="absolute inset-0 bg-gray-900 rounded-sm capa-3d-profunda shadow-lg border border-gray-700 flex items-center justify-center">
-                            <svg viewBox="0 0 100 100" class="w-32 h-32 opacity-20" stroke="var(--gold-dark)">
-                                <polygon points="50,15 90,50 50,85 10,50" fill="none" stroke-width="1" />
-                            </svg>
-                        </div>
-                        <!-- Foto Frontal (Principal) -->
-                        <img src="pelo mediano.jfif" alt="Alaciado Cabello Mediano" class="absolute inset-0 w-full h-full object-cover rounded-sm capa-3d-flotante shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-4 border-white">
-                        
-                        <div class="absolute -left-10 -top-6 bg-white text-gray-900 p-4 rounded-sm shadow-xl capa-3d-flotante flex items-center gap-3">
-                            <span class="font-serif italic text-2xl border-r border-gray-200 pr-3">02</span>
-                            <span class="text-[10px] tracking-widest uppercase font-bold text-gray-500">Reflejo<br>Absoluto</span>
-                        </div>
+                    <div>
+                        <p class="metrica-numero" style="color: var(--gold-dark);">3 Técnicas</p>
+                        <p class="metrica-etiqueta">De Alta Precisión</p>
                     </div>
-                </div>
-                
-                <!-- Texto Explicativo -->
-                <div class="w-full md:w-1/2 text-center md:text-left relative z-20">
-                    <div class="text-gold text-6xl font-serif opacity-20 absolute -top-10 -right-6 md:right-auto md:-left-6 pointer-events-none">M</div>
-                    <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-2 relative">Cabello Mediano</h3>
-                    <h4 class="text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-gold-dark mb-6">Luminoliss Efecto Espejo</h4>
-                    <p class="text-gray-600 leading-relaxed mb-6">
-                        Las longitudes medias son el lienzo perfecto para deslumbrar. Aquí, el protagonista indiscutible es el tratamiento <strong>Luminoliss</strong>.
-                    </p>
-                    <p class="text-gray-600 leading-relaxed border-l-2 border-gold/30 pl-4 italic">
-                        Actúa sellando las cutículas al extremo, creando un brillo tridimensional conocido como "efecto espejo". Elimina la porosidad al instante, transformando el cabello opaco en una cortina de luz manejable y lisa.
-                    </p>
-                </div>
-            </div>
-
-            <!-- APARTADO 3: CABELLO LARGO -->
-            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-20 mb-10 reveal">
-                <!-- Marco Tridimensional -->
-                <div class="w-full md:w-1/2 vista-3d flex justify-center items-center py-10 relative">
-                    <div class="absolute inset-0 bg-gold/5 rounded-full blur-3xl transform scale-150 z-0 opacity-50"></div>
-                    <div class="capa-3d-base relative w-64 md:w-80 h-[400px] md:h-[480px] z-10">
-                        <!-- Foto Posterior (Fondo) -->
-                        <img src="pelo largo 2.jfif" alt="Control Frizz Cabello Largo" class="absolute inset-0 w-full h-full object-cover rounded-sm capa-3d-profunda shadow-lg">
-                        <!-- Foto Frontal (Principal) -->
-                        <img src="pelo Largo.jfif" alt="Alaciado Cabello Largo Abundante" class="absolute inset-0 w-full h-full object-cover rounded-sm capa-3d-flotante shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-4 border-white">
-                        
-                        <div class="absolute -right-10 top-1/2 -translate-y-1/2 bg-gray-900 text-gold p-4 rounded-sm shadow-xl capa-3d-flotante flex flex-col items-center gap-2">
-                            <span class="font-serif italic text-2xl border-b border-gray-700 pb-2">03</span>
-                            <span class="text-[9px] tracking-[0.3em] uppercase font-bold text-center mt-1">Liso<br>Extremo</span>
-                        </div>
+                    <div>
+                        <p class="metrica-numero">VIP</p>
+                        <p class="metrica-etiqueta">Atención 1 a 1</p>
                     </div>
-                </div>
-                
-                <!-- Texto Explicativo -->
-                <div class="w-full md:w-1/2 text-center md:text-left relative z-20">
-                    <div class="text-gold text-6xl font-serif opacity-20 absolute -top-10 -left-6 pointer-events-none">L</div>
-                    <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-2 relative">Cabello Largo Abundante</h3>
-                    <h4 class="text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-gold-dark mb-6">Fusión: Nanoplastia + Luminoliss</h4>
-                    <p class="text-gray-600 leading-relaxed mb-6">
-                        Las melenas largas y abundantes exigen arquitectura y control absoluto. Nuestro protocolo VIP fusiona lo mejor de dos mundos.
-                    </p>
-                    <p class="text-gray-600 leading-relaxed border-l-2 border-gold/30 pl-4 italic">
-                        El poder alisador orgánico de la <strong>Nanoplastia</strong> doma el volumen extremo reestructurando la hebra, mientras el baño final de <strong>Luminoliss</strong> sella el trabajo, garantizando que tu cabello caiga pesado, lacio y como una cascada de brillo inquebrantable.
-                    </p>
                 </div>
             </div>
         </section>
 
-        <!-- SECCIÓN DE AGENDA DINÁMICA Y PRECIOS -->
-        <section id="agenda-interactiva" class="mb-24 max-w-3xl mx-auto reveal">
-            <div class="text-center mb-12">
-                <h2 class="text-2xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4 font-serif">Configura tu Cita</h2>
-                <div class="h-px w-24 bg-gold mx-auto"></div>
-                <p class="text-gray-500 text-xs mt-4 tracking-widest uppercase font-bold">Selecciona tu categoría, tratamiento, día y hora</p>
+        <!-- EXPERIENCIA VISUAL 3D (PORTAFOLIO) -->
+        <section id="experiencia-3d" class="seccion-portafolio-3d">
+            <div class="encabezado-seccion reveal">
+                <span class="etiqueta-superior">Portafolio Interactivo</span>
+                <h2 class="titulo-seccion">Arte Capilar en 3D</h2>
+                <div class="divisor-dorado"></div>
+                <p class="descripcion-seccion">
+                    Mueve el cursor sobre cada marco tridimensional para explorar cómo la <strong style="color: var(--gold-dark);">Nanoplastia</strong>, el <strong style="color: var(--gold-dark);">Botox Capilar</strong> y <strong style="color: var(--gold-dark);">Luminoliss</strong> transforman la arquitectura de cada longitud de cabello.
+                </p>
             </div>
 
-            <div class="border border-gray-200 bg-white p-8 md:p-12 rounded-sm shadow-xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-bl-full pointer-events-none"></div>
-                
-                <form id="formulario-reserva" class="relative z-10 space-y-8">
-                    
-                    <div class="flex flex-col">
-                        <label for="categoria-largo" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">1. Longitud de tu Cabello</label>
-                        <select id="categoria-largo" class="w-full border-b-2 border-gray-200 py-3 text-gray-700 bg-transparent focus:outline-none focus:border-gold transition-colors text-lg font-serif appearance-none cursor-pointer">
-                            <option value="corto" data-precio="1200">Cabello Corto - Inversión: $1,200 MXN</option>
-                            <option value="mediano" data-precio="1800">Cabello Mediano - Inversión: $1,800 MXN</option>
-                            <option value="largo_abundante" data-precio="2300">Cabello Largo Abundante - Inversión: $2,300 MXN</option>
-                        </select>
-                    </div>
-
-                    <!-- NUEVO CAMPO AGREGADO -->
-                    <div class="flex flex-col">
-                        <label for="tipo-alaciado" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">2. ¿Qué tipo de alaciado quieres?</label>
-                        <select id="tipo-alaciado" class="w-full border-b-2 border-gray-200 py-3 text-gray-700 bg-transparent focus:outline-none focus:border-gold transition-colors text-lg font-serif appearance-none cursor-pointer">
-                            <option value="Nanoplastia">Nanoplastia</option>
-                            <option value="Botox Capilar">Botox Capilar</option>
-                            <option value="Luminoliss">Luminoliss</option>
-                            <option value="Valoración">Recomendación de Diana (Valoración en estudio)</option>
-                        </select>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="flex flex-col">
-                            <label for="fecha-cita" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">3. Fecha Deseada</label>
-                            <input type="date" id="fecha-cita" required class="w-full border-b-2 border-gray-200 py-3 text-gray-700 bg-transparent focus:outline-none focus:border-gold transition-colors font-serif">
-                        </div>
-                        <div class="flex flex-col">
-                            <label for="hora-cita" class="text-gray-800 font-bold text-sm tracking-widest uppercase mb-3">4. Hora Deseada</label>
-                            <input type="time" id="hora-cita" required class="w-full border-b-2 border-gray-200 py-3 text-gray-700 bg-transparent focus:outline-none focus:border-gold transition-colors font-serif">
+            <!-- APARTADO 1: CABELLO CORTO -->
+            <div class="fila-portafolio reveal">
+                <div class="vista-3d" data-tilt-card>
+                    <div class="halo-ambiental"></div>
+                    <div class="capa-3d-base">
+                        <img src="pelo corto 2.jfif"
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=700&q=80';"
+                             alt="Reflejo y sedosidad en cabello corto"
+                             class="capa-3d-profunda">
+                        <img src="pelo corto.jfif"
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=700&q=85';"
+                             alt="Alaciado en cabello corto"
+                             class="capa-3d-flotante">
+                        <div class="sello-flotante-3d sello-pos-1">
+                            <span class="sello-numero">01</span>
+                            <span class="sello-texto">Movimiento<br><span style="color: var(--gold-primary);">Puro</span></span>
                         </div>
                     </div>
+                </div>
 
-                    <div class="pt-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="columna-explicativa">
+                    <div class="letra-fondo">C</div>
+                    <span class="etiqueta-inversion">Inversión: $1,200 MXN</span>
+                    <h3 class="titulo-largo">Cabello Corto</h3>
+                    <h4 class="subtitulo-tecnica">Botox Capilar &amp; Nanoplastia</h4>
+                    <p class="parrafo-portafolio">
+                        En longitudes cortas, el objetivo es evitar las puntas rígidas. Aplicamos <strong>Botox Capilar</strong> para inyectar nutrición profunda, sellar puntas y rejuvenecer la fibra desde la raíz.
+                    </p>
+                    <p class="bloque-destacado-portafolio">
+                        La fusión con <strong>Nanoplastia</strong> permite alisar el cabello rebelde conservando una caída natural y un acabado sedoso, garantizando un peinado impecable al despertar.
+                    </p>
+                    <a href="#agenda-interactiva" data-select-length="corto" data-select-treatment="Botox Capilar" class="link-seleccionar-protocolo quick-book-link">
+                        Seleccionar este protocolo &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- APARTADO 2: CABELLO MEDIANO (INVERSO) -->
+            <div class="fila-portafolio inversa reveal">
+                <div class="vista-3d inversa" data-tilt-card>
+                    <div class="halo-ambiental"></div>
+                    <div class="capa-3d-base">
+                        <div class="capa-3d-profunda placa-oscura-profunda">
+                            <svg viewBox="0 0 100 100" style="width: 120px; height: 120px; opacity: 0.25;" stroke="var(--gold-primary)">
+                                <polygon points="50,15 90,50 50,85 10,50" fill="none" stroke-width="1.2" />
+                            </svg>
+                        </div>
+                        <img src="pelo mediano.jfif"
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=700&q=85';"
+                             alt="Alaciado Luminoliss en cabello mediano"
+                             class="capa-3d-flotante">
+                        <div class="sello-flotante-3d sello-pos-2">
+                            <span class="sello-numero">02</span>
+                            <span class="sello-texto">Reflejo<br><span style="color: var(--gold-dark);">Efecto Espejo</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="columna-explicativa">
+                    <div class="letra-fondo">M</div>
+                    <span class="etiqueta-inversion">Inversión: $1,800 MXN</span>
+                    <h3 class="titulo-largo">Cabello Mediano</h3>
+                    <h4 class="subtitulo-tecnica">Luminoliss Efecto Espejo</h4>
+                    <p class="parrafo-portafolio">
+                        Las longitudes medias son el lienzo ideal para deslumbrar. Aquí, el protagonista indiscutible es nuestro protocolo <strong>Luminoliss</strong> de alta reflectancia.
+                    </p>
+                    <p class="bloque-destacado-portafolio">
+                        Actúa sellando las cutículas al extremo, creando un brillo tridimensional conocido como &ldquo;efecto espejo&rdquo;. Elimina la porosidad al instante y transforma el cabello opaco en una cortina de luz.
+                    </p>
+                    <a href="#agenda-interactiva" data-select-length="mediano" data-select-treatment="Luminoliss" class="link-seleccionar-protocolo quick-book-link">
+                        Seleccionar este protocolo &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- APARTADO 3: CABELLO LARGO ABUNDANTE -->
+            <div class="fila-portafolio reveal">
+                <div class="vista-3d" data-tilt-card>
+                    <div class="halo-ambiental"></div>
+                    <div class="capa-3d-base">
+                        <img src="pelo largo 2.jfif"
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=700&q=80';"
+                             alt="Control de frizz en cabello largo"
+                             class="capa-3d-profunda">
+                        <img src="pelo Largo.jfif"
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=700&q=85';"
+                             alt="Alaciado en cabello largo abundante"
+                             class="capa-3d-flotante">
+                        <div class="sello-flotante-3d sello-pos-3">
+                            <span class="sello-numero">03</span>
+                            <span class="sello-texto">Liso<br><span style="color: var(--gold-primary);">Extremo</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="columna-explicativa">
+                    <div class="letra-fondo">L</div>
+                    <span class="etiqueta-inversion">Inversión: $2,300 MXN</span>
+                    <h3 class="titulo-largo">Cabello Largo Abundante</h3>
+                    <h4 class="subtitulo-tecnica">Fusión VIP: Nanoplastia + Luminoliss</h4>
+                    <p class="parrafo-portafolio">
+                        Las melenas largas y abundantes exigen arquitectura y control absoluto. Nuestro protocolo insignia fusiona lo mejor de ambos tratamientos en una sola sesión.
+                    </p>
+                    <p class="bloque-destacado-portafolio">
+                        El poder alisador orgánico de la <strong>Nanoplastia</strong> doma el volumen extremo reestructurando la hebra, mientras el sellado con <strong>Luminoliss</strong> garantiza una caída pesada, lacia y con brillo espejo.
+                    </p>
+                    <a href="#agenda-interactiva" data-select-length="largo_abundante" data-select-treatment="Nanoplastia" class="link-seleccionar-protocolo quick-book-link">
+                        Seleccionar este protocolo &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE AGENDA DINÁMICA Y COTIZADOR VIP -->
+        <section id="agenda-interactiva" class="seccion-agenda contenedor-angosto reveal">
+            <div class="encabezado-seccion" style="margin-bottom: 48px;">
+                <span class="etiqueta-superior">Reserva Directa</span>
+                <h2 class="titulo-seccion" style="font-size: 2rem;">Configura tu Cita VIP</h2>
+                <div class="divisor-dorado"></div>
+                <p class="descripcion-seccion" style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.16em; font-weight: 600;">
+                    Selecciona tu categoría, tratamiento, día y hora
+                </p>
+            </div>
+
+            <div class="tarjeta-formulario">
+                <div class="decoracion-esquina-form"></div>
+
+                <form id="formulario-reserva" class="formulario-reserva" onsubmit="return false;">
+                    <div class="grupo-campo">
+                        <label for="categoria-largo" class="etiqueta-campo">
+                            <span class="paso-circulo">1</span>
+                            Longitud de tu Cabello
+                        </label>
+                        <div class="select-luxury-wrapper">
+                            <select id="categoria-largo" class="input-linea">
+                                <option value="corto" data-precio="1200" data-duracion="2.5 a 3 horas">Cabello Corto — Inversión: $1,200 MXN</option>
+                                <option value="mediano" data-precio="1800" data-duracion="3 a 4 horas">Cabello Mediano — Inversión: $1,800 MXN</option>
+                                <option value="largo_abundante" data-precio="2300" data-duracion="4 a 5 horas">Cabello Largo Abundante — Inversión: $2,300 MXN</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="tipo-alaciado" class="etiqueta-campo">
+                            <span class="paso-circulo">2</span>
+                            ¿Qué tratamiento deseas realizar?
+                        </label>
+                        <div class="select-luxury-wrapper">
+                            <select id="tipo-alaciado" class="input-linea">
+                                <option value="Nanoplastia" data-beneficio="Alaciado orgánico progresivo, reducción extrema de volumen y restructuración profunda.">Nanoplastia (Alaciado Orgánico &amp; Control Volumen)</option>
+                                <option value="Botox Capilar" data-beneficio="Nutrición intensiva, rejuvenecimiento de hebra, eliminación de frizz y suavidad natural.">Botox Capilar (Hidratación &amp; Rejuvenecimiento)</option>
+                                <option value="Luminoliss" data-beneficio="Sellado cuticular extremo con acabado liso y brillo tridimensional efecto espejo.">Luminoliss (Brillo Efecto Espejo &amp; Sellado)</option>
+                                <option value="Valoración" data-beneficio="Diagnóstico presencial en cabina con Diana para elegir la fórmula ideal según tu historial.">Recomendación de Diana (Valoración en Estudio)</option>
+                            </select>
+                        </div>
+                        <p id="beneficio-tratamiento" class="nota-beneficio">
+                            Alaciado orgánico progresivo, reducción extrema de volumen y restructuración profunda.
+                        </p>
+                    </div>
+
+                    <div class="grid-dos-columnas">
+                        <div class="grupo-campo">
+                            <label for="fecha-cita" class="etiqueta-campo">
+                                <span class="paso-circulo">3</span>
+                                Fecha Deseada
+                            </label>
+                            <input type="date" id="fecha-cita" required class="input-linea">
+                        </div>
+                        <div class="grupo-campo">
+                            <label for="hora-cita" class="etiqueta-campo">
+                                <span class="paso-circulo">4</span>
+                                Hora Preferida
+                            </label>
+                            <input type="time" id="hora-cita" min="09:00" max="20:00" value="11:00" required class="input-linea">
+                        </div>
+                    </div>
+
+                    <div class="pie-formulario">
                         <div>
-                            <p class="text-gray-500 text-xs tracking-widest uppercase font-bold mb-1">Inversión Estimada</p>
-                            <p id="precio-mostrado" class="text-4xl text-gold-dark font-bold font-serif">$1200 <span class="text-sm font-sans text-gray-400">MXN</span></p>
+                            <div class="encabezado-inversion">
+                                <p class="texto-inversion-label">Inversión Estimada</p>
+                                <span id="duracion-estimada" class="pildora-duracion">Sesión: 2.5 a 3 horas</span>
+                            </div>
+                            <p id="precio-mostrado" class="precio-grande">
+                                $1,200 <span class="moneda-mxn">MXN</span>
+                            </p>
                         </div>
-                        
-                        <a id="btn-whatsapp-dinamico" href="#" target="_blank" class="w-full md:w-auto bg-gray-900 text-white font-bold py-4 px-10 rounded-sm shadow-xl hover:bg-gold hover:text-black transition-all duration-300 text-xs uppercase tracking-[0.2em] text-center flex items-center justify-center gap-3">
-                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+
+                        <a id="btn-whatsapp-dinamico" href="#" target="_blank" rel="noopener noreferrer" class="btn-onyx-luxury">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
                                 <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
                             </svg>
                             Confirmar por WhatsApp
@@ -443,142 +589,223 @@
             </div>
         </section>
 
-        <!-- SECCIÓN DE RESEÑAS -->
-        <section id="resenas" class="mb-24 max-w-4xl mx-auto reveal">
-            <div class="text-center mb-12">
-                <h2 class="text-2xl tracking-[0.2em] font-light text-gray-900 uppercase mb-4 font-serif">Experiencias VIP</h2>
-                <div class="h-px w-24 bg-gold mx-auto"></div>
+        <!-- SECCIÓN DE RESEÑAS VIP -->
+        <section id="resenas" class="seccion-resenas contenedor-medio reveal">
+            <div class="encabezado-seccion" style="margin-bottom: 48px;">
+                <span class="etiqueta-superior">Clientes Reales</span>
+                <h2 class="titulo-seccion" style="font-size: 1.8rem;">Experiencias VIP</h2>
+                <div class="divisor-dorado"></div>
             </div>
-            <div id="lista-resenas" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            <div id="lista-resenas" class="grid-resenas"></div>
         </section>
-        
+
     </main>
 
     <!-- ========== FOOTER ========== -->
-    <footer class="bg-gray-100 border-t border-gray-200 mt-20 py-10 text-center flex flex-col items-center justify-center">
-        <svg viewBox="0 0 100 100" class="w-6 h-6 mb-3" style="filter: grayscale(100%); opacity: 0.5;">
+    <footer class="footer-davila">
+        <svg viewBox="0 0 100 100" class="icono-footer">
             <polygon points="50,45 55,50 50,55 45,50" fill="currentColor" />
             <polygon points="42,5 7,40 42,75" fill="none" stroke="currentColor" stroke-width="2" />
             <polygon points="58,25 93,60 58,95" fill="none" stroke="currentColor" stroke-width="2" />
         </svg>
-        <p class="text-gray-400 text-[10px] tracking-widest uppercase font-bold">Powered by Mystery Onyx</p>
+        <p class="footer-titulo">Davila Studio</p>
+        <p class="footer-sub">Powered by Mystery Onyx &bull; Ecosistema B2B</p>
     </footer>
 
+    <!-- ========== LÓGICA INTERACTIVA VANILLA JS ========== -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
+            // 1. Intro Cinemática
             setTimeout(() => {
                 const linea = document.getElementById('linea-divisora');
-                if(linea) {
-                    linea.classList.remove('w-0');
-                    linea.classList.add('w-32'); 
-                }
-            }, 800);
+                if (linea) linea.classList.add('activa');
+            }, 600);
 
             const contenedorLluvia = document.getElementById('contenedor-particulas');
-            const totalParticulas = window.innerWidth < 768 ? 20 : 40; 
-            for (let i = 0; i < totalParticulas; i++) {
-                let polvo = document.createElement('div');
-                polvo.classList.add('polvo-oro');
-                const size = Math.random() * 3 + 2;
-                polvo.style.width = size + 'px';
-                polvo.style.height = size + 'px';
-                polvo.style.left = Math.random() * 100 + 'vw';
-                polvo.style.bottom = (Math.random() * 20 - 10) + 'vh'; 
-                polvo.style.animationDuration = (Math.random() * 5 + 3) + 's';
-                polvo.style.animationDelay = (Math.random() * 3) + 's';
-                contenedorLluvia.appendChild(polvo);
+            const introScreen = document.getElementById('intro-premium');
+            const totalParticulas = window.innerWidth < 768 ? 18 : 36;
+
+            if (contenedorLluvia) {
+                for (let i = 0; i < totalParticulas; i++) {
+                    const polvo = document.createElement('div');
+                    polvo.classList.add('polvo-oro');
+                    const size = Math.random() * 3 + 2;
+                    polvo.style.width = size + 'px';
+                    polvo.style.height = size + 'px';
+                    polvo.style.left = Math.random() * 100 + 'vw';
+                    polvo.style.bottom = (Math.random() * 20 - 10) + 'vh';
+                    polvo.style.animationDuration = (Math.random() * 4 + 2.5) + 's';
+                    polvo.style.animationDelay = (Math.random() * 1.8) + 's';
+                    contenedorLluvia.appendChild(polvo);
+                }
+                setTimeout(() => {
+                    if (introScreen) introScreen.style.display = 'none';
+                }, 3600);
             }
 
+            // 2. Scroll Reveal
             const revealElements = document.querySelectorAll('.reveal');
-            const revealObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if(entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                root: null,
-                threshold: 0.15,
-                rootMargin: "0px 0px -50px 0px"
-            });
-            revealElements.forEach(el => revealObserver.observe(el));
+            if ('IntersectionObserver' in window) {
+                const revealObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.14, rootMargin: "0px 0px -45px 0px" });
+                revealElements.forEach(el => revealObserver.observe(el));
+            } else {
+                revealElements.forEach(el => el.classList.add('active'));
+            }
 
+            // 3. Efecto Parallax 3D Interactivo al mover el mouse
+            document.querySelectorAll('[data-tilt-card]').forEach(card => {
+                const baseLayer = card.querySelector('.capa-3d-base');
+                if (!baseLayer) return;
+
+                card.addEventListener('mousemove', (e) => {
+                    if (window.innerWidth < 768) return;
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 14;
+                    const rotateX = ((rect.height / 2 - y) / (rect.height / 2)) * 8;
+                    baseLayer.style.transform = `rotateY(${rotateY.toFixed(2)}deg) rotateX(${rotateX.toFixed(2)}deg)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    baseLayer.style.transform = '';
+                });
+            });
+
+            // 4. Configurador Dinámico de Citas
             const selectCategoria = document.getElementById('categoria-largo');
             const selectTipoTratamiento = document.getElementById('tipo-alaciado');
             const inputFecha = document.getElementById('fecha-cita');
             const inputHora = document.getElementById('hora-cita');
             const precioMostrado = document.getElementById('precio-mostrado');
+            const duracionEstimada = document.getElementById('duracion-estimada');
+            const beneficioTratamiento = document.getElementById('beneficio-tratamiento');
             const btnWhatsapp = document.getElementById('btn-whatsapp-dinamico');
-            
             const numeroWhatsapp = "528680000000";
 
-            function actualizarReserva() {
+            if (inputFecha) {
+                const hoy = new Date();
+                const yyyy = hoy.getFullYear();
+                const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+                const dd = String(hoy.getDate()).padStart(2, '0');
+                inputFecha.min = `${yyyy}-${mm}-${dd}`;
+            }
+
+            function actualizarReserva(animarPrecio = false) {
                 const opcionSeleccionada = selectCategoria.options[selectCategoria.selectedIndex];
-                const precio = opcionSeleccionada.getAttribute('data-precio');
-                const categoriaTexto = opcionSeleccionada.text.split(' - ')[0];
-                const tipoTratamientoTexto = selectTipoTratamiento.options[selectTipoTratamiento.selectedIndex].text;
+                const precioRaw = Number(opcionSeleccionada.getAttribute('data-precio') || 1200);
+                const precioFormateado = precioRaw.toLocaleString('es-MX');
+                const duracion = opcionSeleccionada.getAttribute('data-duracion') || '3 horas';
+                const categoriaTexto = opcionSeleccionada.text.split(' — ')[0];
 
-                precioMostrado.innerHTML = `$${precio} <span class="text-sm font-sans text-gray-400">MXN</span>`;
+                const opcionTratamiento = selectTipoTratamiento.options[selectTipoTratamiento.selectedIndex];
+                const tipoTratamientoValor = opcionTratamiento.value;
+                const beneficioTexto = opcionTratamiento.getAttribute('data-beneficio') || '';
 
-                let mensaje = `¡Hola Diana! Me gustaría agendar una cita en Davila Studio. %0A%0A`;
-                mensaje += `✨ *Servicio:* ${tipoTratamientoTexto} en ${categoriaTexto} %0A`;
-                
-                if(inputFecha.value) {
+                precioMostrado.innerHTML = `$${precioFormateado} <span class="moneda-mxn">MXN</span>`;
+                if (duracionEstimada) duracionEstimada.textContent = `Sesión: ${duracion}`;
+                if (beneficioTratamiento && beneficioTexto) beneficioTratamiento.textContent = beneficioTexto;
+
+                if (animarPrecio) {
+                    precioMostrado.classList.remove('price-animate');
+                    void precioMostrado.offsetWidth;
+                    precioMostrado.classList.add('price-animate');
+                }
+
+                let mensaje = `¡Hola Diana! Me gustaría agendar una cita VIP en *Davila Studio*. %0A%0A`;
+                mensaje += `✨ *Tratamiento:* ${tipoTratamientoValor} %0A`;
+                mensaje += `💇‍♀️ *Longitud:* ${categoriaTexto} %0A`;
+
+                if (inputFecha.value) {
                     const fechaObj = new Date(inputFecha.value + 'T00:00:00');
-                    const fechaFormateada = fechaObj.toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    const fechaFormateada = fechaObj.toLocaleDateString('es-MX', {
+                        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                    });
                     mensaje += `📅 *Día:* ${fechaFormateada} %0A`;
                 } else {
                     mensaje += `📅 *Día:* Por definir %0A`;
                 }
 
-                if(inputHora.value) {
-                    mensaje += `⏰ *Hora:* ${inputHora.value} %0A`;
+                if (inputHora.value) {
+                    mensaje += `⏰ *Hora:* ${inputHora.value} hrs %0A`;
                 } else {
                     mensaje += `⏰ *Hora:* Por definir %0A`;
                 }
 
-                mensaje += `💎 *Inversión aprox:* $${precio} MXN %0A%0A`;
-                mensaje += `¿Tendrás disponibilidad?`;
+                mensaje += `💎 *Inversión estimada:* $${precioFormateado} MXN %0A%0A`;
+                mensaje += `¿Tendrás disponibilidad para esa fecha?`;
 
                 btnWhatsapp.href = `https://wa.me/${numeroWhatsapp}?text=${mensaje}`;
             }
 
-            selectCategoria.addEventListener('change', actualizarReserva);
-            selectTipoTratamiento.addEventListener('change', actualizarReserva);
-            inputFecha.addEventListener('change', actualizarReserva);
-            inputHora.addEventListener('change', actualizarReserva);
-            
-            actualizarReserva();
+            selectCategoria.addEventListener('change', () => actualizarReserva(true));
+            selectTipoTratamiento.addEventListener('change', () => actualizarReserva(false));
+            inputFecha.addEventListener('change', () => actualizarReserva(false));
+            inputHora.addEventListener('change', () => actualizarReserva(false));
 
+            document.querySelectorAll('.quick-book-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    const lengthVal = link.getAttribute('data-select-length');
+                    const treatmentVal = link.getAttribute('data-select-treatment');
+                    if (lengthVal) selectCategoria.value = lengthVal;
+                    if (treatmentVal) selectTipoTratamiento.value = treatmentVal;
+                    actualizarReserva(true);
+                });
+            });
+
+            actualizarReserva(false);
+
+            // 5. Renderizado de Reseñas con Clases Propias (Sin Tailwind)
             function crearHTMLResena(resena) {
                 let diamantesHTML = '';
-                for(let i=0; i<5; i++) {
-                    diamantesHTML += `<svg class="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25l-4.5 4.5h9l-4.5-4.5zM3 8.25l9 13.5 9-13.5H3z"/></svg>`;
+                for (let i = 0; i < 5; i++) {
+                    diamantesHTML += `<svg class="icono-diamante" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25l-4.5 4.5h9l-4.5-4.5zM3 8.25l9 13.5 9-13.5H3z"/></svg>`;
                 }
                 return `
-                    <div class="bg-white border border-gray-100 p-6 rounded-sm shadow-sm">
-                        <div class="flex justify-between items-center mb-4 border-b border-gray-50 pb-2">
-                            <span class="font-bold text-gray-800 uppercase tracking-wider text-xs font-serif">${resena.nombre}</span>
-                            <div class="flex gap-1">${diamantesHTML}</div>
+                    <article class="tarjeta-resena">
+                        <div>
+                            <div class="cabecera-resena">
+                                <div>
+                                    <span class="autora-resena">${resena.nombre}</span>
+                                    <span class="tratamiento-resena">${resena.tratamiento}</span>
+                                </div>
+                                <div class="diamantes-calificacion">${diamantesHTML}</div>
+                            </div>
+                            <p class="texto-resena">&ldquo;${resena.texto}&rdquo;</p>
                         </div>
-                        <p class="text-gray-600 italic font-light text-sm leading-relaxed">"${resena.texto}"</p>
-                    </div>
+                        <span class="sello-verificado">&#10003; Cita Verificada Onyx</span>
+                    </article>
                 `;
             }
 
             const lista = document.getElementById('lista-resenas');
             const resenasDemo = [
-                { nombre: "Fernanda G.", texto: "El mejor alaciado japonés que me han hecho. Mi cabello quedó como espejo, súper recomendado el servicio VIP." },
-                { nombre: "Sofía M.", texto: "Excelente trato de Diana, me resolvió todas mis dudas y la keratina me duró muchísimo." }
+                {
+                    nombre: "Fernanda G.",
+                    tratamiento: "Luminoliss • Cabello Mediano",
+                    texto: "El mejor alaciado que me han hecho. Mi cabello quedó literalmente como espejo y sin nada de porosidad. Súper recomendado el servicio VIP."
+                },
+                {
+                    nombre: "Sofía M.",
+                    tratamiento: "Nanoplastia • Cabello Largo",
+                    texto: "Excelente trato de Diana, me explicó exactamente qué necesitaba mi cabello antes de empezar y el liso me ha durado intacto por meses."
+                },
+                {
+                    nombre: "Valeria R.",
+                    tratamiento: "Botox Capilar • Cabello Corto",
+                    texto: "Tenía miedo de que mi corte perdiera movimiento, pero quedó súper sedoso, brillante y cero rígido. El estudio es impecable."
+                }
             ];
-            
-            if(lista) {
-                lista.innerHTML = '';
-                resenasDemo.forEach(resena => {
-                    lista.innerHTML += crearHTMLResena(resena);
-                });
+
+            if (lista) {
+                lista.innerHTML = resenasDemo.map(crearHTMLResena).join('');
             }
         });
     </script>
