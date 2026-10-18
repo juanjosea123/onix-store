@@ -897,6 +897,122 @@ footer {
     text-align: center;
 }
 
+/* 12. PORTAL DE ACCESO */
+.auth-section {
+    padding: 100px 0;
+    background: radial-gradient(circle at 78% 30%, rgba(212, 175, 55, 0.10), transparent 34%), var(--onyx-deep);
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.auth-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 480px);
+    gap: 80px;
+    align-items: center;
+}
+
+.auth-intro h2 {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    margin: 14px 0 18px;
+}
+
+.auth-intro > p {
+    color: var(--onyx-text-muted);
+    font-weight: 300;
+    max-width: 530px;
+}
+
+.auth-security-note {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 26px;
+    color: var(--onyx-gold-light);
+    font-size: 0.79rem;
+}
+
+.auth-security-note span { color: var(--onyx-gold); }
+
+.auth-card {
+    padding: 30px;
+    background: linear-gradient(155deg, rgba(24, 24, 28, 0.97), rgba(10, 10, 12, 0.98));
+    border: 1px solid var(--onyx-gold-border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-elevation), 0 0 45px rgba(212, 175, 55, 0.08);
+}
+
+.auth-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 26px;
+}
+
+.auth-tab {
+    padding: 0 0 13px;
+    color: var(--onyx-text-muted);
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font: 600 0.74rem 'Montserrat', sans-serif;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.auth-tab.active { color: var(--onyx-gold); border-bottom-color: var(--onyx-gold); }
+
+.auth-form { display: grid; gap: 10px; }
+.auth-form[hidden], .logged-in-panel[hidden], .auth-tabs[hidden] { display: none !important; }
+.auth-form label { font-size: 0.75rem; color: var(--onyx-text-light); letter-spacing: 0.7px; margin-top: 5px; }
+.auth-form input {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.035);
+    color: var(--onyx-white);
+    padding: 12px 13px;
+    outline: none;
+    font: 0.9rem 'Montserrat', sans-serif;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.auth-form input::placeholder { color: #777780; }
+.auth-form input:focus { border-color: var(--onyx-gold); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.11); }
+.auth-form .btn-gold { margin-top: 12px; }
+
+.password-field { position: relative; }
+.password-field input { padding-right: 82px; }
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    color: var(--onyx-gold);
+    cursor: pointer;
+    font: 600 0.68rem 'Montserrat', sans-serif;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+}
+.password-toggle:hover, .password-toggle:focus-visible { color: var(--onyx-gold-light); outline: none; }
+
+.auth-switch-copy { text-align: center; color: var(--onyx-text-muted); font-size: 0.78rem; margin-top: 5px; }
+.text-button { background: transparent; border: 0; color: var(--onyx-gold); cursor: pointer; font: inherit; padding: 0; }
+.text-button:hover { color: var(--onyx-gold-light); text-decoration: underline; }
+
+.auth-message { padding: 11px 13px; margin-bottom: 20px; border-radius: 3px; font-size: 0.79rem; }
+.auth-message.success { background: rgba(98, 180, 111, 0.12); border: 1px solid rgba(98, 180, 111, 0.42); color: #b5e2bb; }
+.auth-message.error { background: rgba(211, 88, 88, 0.12); border: 1px solid rgba(211, 88, 88, 0.42); color: #ffb6b6; }
+.auth-message.info { background: rgba(212, 175, 55, 0.10); border: 1px solid var(--onyx-gold-border); color: var(--onyx-gold-light); }
+
+.logged-in-panel { text-align: center; padding: 16px 0 7px; }
+.logged-in-panel h3 { margin: 14px 0 6px; font-size: 1.5rem; }
+.logged-in-panel p { color: var(--onyx-text-muted); font-size: 0.86rem; margin-bottom: 28px; }
+
+
 .footer-divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
@@ -911,6 +1027,8 @@ footer {
     .onyx-grid-3 {
         grid-template-columns: repeat(2, 1fr);
     }
+    .auth-layout { grid-template-columns: 1fr; gap: 36px; }
+    .auth-intro { max-width: 620px; }
 }
 
 @media (max-width: 768px) {
@@ -948,4 +1066,6 @@ footer {
         right: 24px;
         bottom: 20px;
     }
+    .auth-section { padding: 72px 0; }
+    .auth-card { padding: 24px 20px; }
 }

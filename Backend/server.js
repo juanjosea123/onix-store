@@ -12,6 +12,7 @@ const path = require('node:path');
 const HOST = '127.0.0.1';
 const PORT = Number(process.env.PORT || 8000);
 const DATA_FILE = process.env.USERS_FILE || path.join(__dirname, 'data', 'users.json');
+const FRONTEND_DIR = path.resolve(__dirname, '..');
 const MAX_BODY_BYTES = 16 * 1024;
 const SCRYPT_KEY_LENGTH = 64;
 const SCRYPT_OPTIONS = { N: 2 ** 15, r: 8, p: 1, maxmem: 64 * 1024 * 1024 };
@@ -21,6 +22,19 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 let storageQueue = Promise.resolve();
 
 class ValidationError extends Error {}
+
+const CONTENT_TYPES = {
+  '.css': 'text/css; charset=utf-8',
+  '.html': 'text/html; charset=utf-8',
+  '.jfif': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.jpg': 'image/jpeg',
+  '.js': 'text/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png',
+  '.svg': 'image/svg+xml',
+  '.webp': 'image/webp',
+};
 
 function nowIso() {
   return new Date().toISOString();
@@ -159,6 +173,41 @@ function sendJson(response, status, body) {
   response.end(encoded);
 }
 
+async function serveStatic(request, response) {
+  let pathname;
+  try {
+    pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
+  } catch {
+    sendJson(response, 400, { ok: false, message: 'La URL no es válida.' });
+    return;
+  }
+
+  const relativePath = pathname === '/' ? 'index.html' : pathname.replace(/^[/\\]+/, '');
+  const filePath = path.resolve(FRONTEND_DIR, relativePath);
+  if (!filePath.startsWith(`${FRONTEND_DIR}${path.sep}`)) {
+    sendJson(response, 403, { ok: false, message: 'Acceso no permitido.' });
+    return;
+  }
+
+  try {
+    const file = await fs.readFile(filePath);
+    response.writeHead(200, {
+      'Content-Type': CONTENT_TYPES[path.extname(filePath).toLowerCase()] || 'application/octet-stream',
+      'Content-Length': file.length,
+      'X-Content-Type-Options': 'nosniff',
+      'Cache-Control': path.extname(filePath).toLowerCase() === '.html' ? 'no-cache' : 'public, max-age=3600',
+    });
+    response.end(file);
+  } catch (error) {
+    if (error.code === 'ENOENT' || error.code === 'EISDIR') {
+      sendJson(response, 404, { ok: false, message: 'Archivo no encontrado.' });
+      return;
+    }
+    console.error('Error al servir el frontend:', error.message);
+    sendJson(response, 500, { ok: false, message: 'No se pudo cargar el sitio.' });
+  }
+}
+
 function readJson(request) {
   return new Promise((resolve, reject) => {
     let received = 0;
@@ -189,7 +238,7 @@ async function handler(request, response) {
   if (request.method === 'OPTIONS') {
     response.writeHead(204, {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     });
     response.end();
@@ -197,6 +246,10 @@ async function handler(request, response) {
   }
   if (request.method === 'GET' && request.url === '/api/health') {
     sendJson(response, 200, { ok: true, service: 'mystique-accounts-node' });
+    return;
+  }
+  if (request.method === 'GET') {
+    await serveStatic(request, response);
     return;
   }
   if (request.method !== 'POST' || !['/api/auth/register', '/api/auth/login'].includes(request.url)) {

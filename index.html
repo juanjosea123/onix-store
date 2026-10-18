@@ -183,7 +183,7 @@
                 <li><a class="nav-link" href="#tecnologia">Tecnología</a></li>
                 <li><a class="nav-link" href="#directorio">Cartelera Élite</a></li>
                 <li><a class="nav-link" href="#servicios">Directorio</a></li>
-                <li><a class="btn-gold" href="#portal">Portal Login</a></li>
+                <li><a class="btn-gold" href="#portal">Mi cuenta</a></li>
             </ul>
         </div>
     </nav>
@@ -378,6 +378,65 @@
             </div>
         </section>
 
+        <!-- Portal de cuentas -->
+        <section id="portal" class="auth-section" aria-labelledby="authTitle">
+            <div class="onyx-container auth-layout">
+                <div class="auth-intro reveal-up">
+                    <span class="eyebrow-tag">Área privada</span>
+                    <h2 id="authTitle" class="brand-font">Tu cuenta <span class="text-gold-gradient">Onyx</span></h2>
+                    <p>Regístrate para guardar tus datos de acceso al ecosistema. Si ya tienes una cuenta, inicia sesión con tu correo y contraseña.</p>
+                    <div class="auth-security-note"><span aria-hidden="true">✦</span> Las contraseñas se almacenan cifradas en el servidor.</div>
+                </div>
+
+                <div class="auth-card reveal-up delay-100">
+                    <div class="auth-tabs" role="tablist" aria-label="Acceso a cuenta">
+                        <button class="auth-tab active" type="button" id="loginTab" role="tab" aria-selected="true" aria-controls="loginPanel">Iniciar sesión</button>
+                        <button class="auth-tab" type="button" id="registerTab" role="tab" aria-selected="false" aria-controls="registerPanel">Crear cuenta</button>
+                    </div>
+
+                    <div id="authMessage" class="auth-message" role="status" aria-live="polite" hidden></div>
+
+                    <div id="loggedInPanel" class="logged-in-panel" hidden>
+                        <span class="eyebrow-tag">Sesión activa</span>
+                        <h3 class="brand-font">Hola, <span id="accountName"></span></h3>
+                        <p id="accountEmail"></p>
+                        <button id="logoutButton" class="btn-outline-onyx" type="button">Cerrar sesión</button>
+                    </div>
+
+                    <form id="loginPanel" class="auth-form" novalidate>
+                        <label for="loginEmail">Correo electrónico</label>
+                        <input id="loginEmail" name="email" type="email" autocomplete="email" placeholder="tu@correo.com" required>
+                        <label for="loginPassword">Contraseña</label>
+                        <div class="password-field">
+                            <input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="Tu contraseña" required>
+                            <button class="password-toggle" type="button" data-toggle-password="loginPassword" aria-label="Mostrar contraseña" aria-pressed="false">Mostrar</button>
+                        </div>
+                        <button class="btn-gold btn-block" type="submit">Iniciar sesión</button>
+                        <p class="auth-switch-copy">¿Aún no tienes cuenta? <button class="text-button" type="button" data-open-auth="register">Regístrate</button></p>
+                    </form>
+
+                    <form id="registerPanel" class="auth-form" hidden novalidate>
+                        <label for="registerName">Nombre completo</label>
+                        <input id="registerName" name="fullName" type="text" autocomplete="name" maxlength="120" placeholder="Tu nombre" required>
+                        <label for="registerEmail">Correo electrónico</label>
+                        <input id="registerEmail" name="email" type="email" autocomplete="email" placeholder="tu@correo.com" required>
+                        <label for="registerPassword">Contraseña</label>
+                        <div class="password-field">
+                            <input id="registerPassword" name="password" type="password" autocomplete="new-password" minlength="10" maxlength="256" placeholder="Mínimo 10 caracteres" required>
+                            <button class="password-toggle" type="button" data-toggle-password="registerPassword" aria-label="Mostrar contraseña" aria-pressed="false">Mostrar</button>
+                        </div>
+                        <label for="registerPasswordConfirm">Confirmar contraseña</label>
+                        <div class="password-field">
+                            <input id="registerPasswordConfirm" name="passwordConfirm" type="password" autocomplete="new-password" minlength="10" maxlength="256" placeholder="Repite tu contraseña" required>
+                            <button class="password-toggle" type="button" data-toggle-password="registerPasswordConfirm" aria-label="Mostrar contraseña" aria-pressed="false">Mostrar</button>
+                        </div>
+                        <button class="btn-gold btn-block" type="submit">Crear cuenta</button>
+                        <p class="auth-switch-copy">¿Ya tienes cuenta? <button class="text-button" type="button" data-open-auth="login">Inicia sesión</button></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
         <!-- Sección de Tecnología -->
         <section id="tecnologia" class="tech-section">
             <div class="onyx-container">
@@ -413,7 +472,7 @@
         </section>
     </main>
 
-    <footer id="portal">
+    <footer>
         <div class="onyx-container">
             <h4 class="brand-font" style="margin-bottom: 8px;">Mystery<span style="color: var(--onyx-gold);">Onyx</span> Store</h4>
             <p style="font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--onyx-gold);">
@@ -509,6 +568,152 @@
                     });
                 });
             });
+
+            // Portal de cuentas: consume la API Node que sirve este mismo sitio.
+            const loginForm = document.getElementById("loginPanel");
+            const registerForm = document.getElementById("registerPanel");
+            const loginTab = document.getElementById("loginTab");
+            const registerTab = document.getElementById("registerTab");
+            const authTabs = document.querySelector(".auth-tabs");
+            const authMessage = document.getElementById("authMessage");
+            const loggedInPanel = document.getElementById("loggedInPanel");
+            const accountName = document.getElementById("accountName");
+            const accountEmail = document.getElementById("accountEmail");
+            const logoutButton = document.getElementById("logoutButton");
+            const authStorageKey = "onyx-account-session";
+
+            function showAuthMessage(message, type) {
+                authMessage.textContent = message;
+                authMessage.className = "auth-message " + type;
+                authMessage.hidden = false;
+            }
+
+            function clearAuthMessage() {
+                authMessage.textContent = "";
+                authMessage.className = "auth-message";
+                authMessage.hidden = true;
+            }
+
+            function setAuthTab(tab) {
+                const isLogin = tab === "login";
+                loginTab.classList.toggle("active", isLogin);
+                registerTab.classList.toggle("active", !isLogin);
+                loginTab.setAttribute("aria-selected", String(isLogin));
+                registerTab.setAttribute("aria-selected", String(!isLogin));
+                loginForm.hidden = !isLogin;
+                registerForm.hidden = isLogin;
+                clearAuthMessage();
+            }
+
+            function setLoggedInUser(user) {
+                accountName.textContent = user.fullName;
+                accountEmail.textContent = user.email;
+                authTabs.hidden = true;
+                loginForm.hidden = true;
+                registerForm.hidden = true;
+                loggedInPanel.hidden = false;
+            }
+
+            function setLoggedOut() {
+                loggedInPanel.hidden = true;
+                authTabs.hidden = false;
+                setAuthTab("login");
+            }
+
+            async function sendAuthRequest(endpoint, body) {
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok || !result.ok) {
+                    throw new Error(result.message || "No se pudo completar la solicitud.");
+                }
+                return result;
+            }
+
+            loginTab.addEventListener("click", () => setAuthTab("login"));
+            registerTab.addEventListener("click", () => setAuthTab("register"));
+            document.querySelectorAll("[data-open-auth]").forEach((button) => {
+                button.addEventListener("click", () => setAuthTab(button.dataset.openAuth));
+            });
+            document.querySelectorAll("[data-toggle-password]").forEach((button) => {
+                button.addEventListener("click", () => {
+                    const input = document.getElementById(button.dataset.togglePassword);
+                    const willShowPassword = input.type === "password";
+                    input.type = willShowPassword ? "text" : "password";
+                    button.textContent = willShowPassword ? "Ocultar" : "Mostrar";
+                    button.setAttribute("aria-pressed", String(willShowPassword));
+                    button.setAttribute("aria-label", willShowPassword ? "Ocultar contraseña" : "Mostrar contraseña");
+                });
+            });
+
+            loginForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+                clearAuthMessage();
+                const button = loginForm.querySelector("button[type='submit']");
+                button.disabled = true;
+                button.textContent = "Verificando…";
+                try {
+                    const result = await sendAuthRequest("/api/auth/login", {
+                        email: loginForm.email.value.trim(),
+                        password: loginForm.password.value
+                    });
+                    localStorage.setItem(authStorageKey, JSON.stringify(result.user));
+                    setLoggedInUser(result.user);
+                    showAuthMessage("Sesión iniciada correctamente.", "success");
+                    loginForm.reset();
+                } catch (error) {
+                    showAuthMessage(error.message || "No fue posible iniciar sesión. Revisa que el servidor esté en ejecución.", "error");
+                } finally {
+                    button.disabled = false;
+                    button.textContent = "Iniciar sesión";
+                }
+            });
+
+            registerForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+                clearAuthMessage();
+                const password = registerForm.password.value;
+                if (password !== registerForm.passwordConfirm.value) {
+                    showAuthMessage("Las contraseñas no coinciden.", "error");
+                    return;
+                }
+                const button = registerForm.querySelector("button[type='submit']");
+                button.disabled = true;
+                button.textContent = "Creando cuenta…";
+                try {
+                    const result = await sendAuthRequest("/api/auth/register", {
+                        fullName: registerForm.fullName.value.trim(),
+                        email: registerForm.email.value.trim(),
+                        password
+                    });
+                    registerForm.reset();
+                    setAuthTab("login");
+                    loginForm.email.value = result.user.email;
+                    showAuthMessage("Cuenta creada. Ahora inicia sesión con tu contraseña.", "success");
+                    document.getElementById("loginPassword").focus();
+                } catch (error) {
+                    showAuthMessage(error.message || "No fue posible crear la cuenta. Revisa que el servidor esté en ejecución.", "error");
+                } finally {
+                    button.disabled = false;
+                    button.textContent = "Crear cuenta";
+                }
+            });
+
+            logoutButton.addEventListener("click", () => {
+                localStorage.removeItem(authStorageKey);
+                setLoggedOut();
+                showAuthMessage("Sesión cerrada.", "info");
+            });
+
+            try {
+                const savedUser = JSON.parse(localStorage.getItem(authStorageKey));
+                if (savedUser && savedUser.fullName && savedUser.email) setLoggedInUser(savedUser);
+            } catch {
+                localStorage.removeItem(authStorageKey);
+            }
 
             // Scroll Reveal
             const revealElements = document.querySelectorAll(".reveal-up");
