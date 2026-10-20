@@ -622,11 +622,12 @@
             }
 
             async function sendAuthRequest(endpoint, body) {
+                const unavailableMessage = "No se pudo completar la solicitud.";
                 const apiBase = typeof window.ONYX_API_URL === "string"
                     ? window.ONYX_API_URL.trim().replace(/\/$/, "")
                     : "";
                 if (window.location.hostname.endsWith("github.io") && !apiBase) {
-                    throw new Error("Configura la URL del Worker en api-config.js para activar las cuentas en GitHub Pages.");
+                    throw new Error(unavailableMessage);
                 }
                 let response;
                 try {
@@ -636,11 +637,11 @@
                         body: JSON.stringify(body)
                     });
                 } catch {
-                    throw new Error("No se puede contactar al servidor de cuentas. El sitio debe publicarse en un hosting compatible con Node.js.");
+                    throw new Error(unavailableMessage);
                 }
                 const result = await response.json().catch(() => null);
                 if (!response.ok || !result.ok) {
-                    throw new Error(result?.message || "El servidor de cuentas no está disponible. Verifica que Node.js esté ejecutando Backend/server.js.");
+                    throw new Error(result?.message || unavailableMessage);
                 }
                 return result;
             }
