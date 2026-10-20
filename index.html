@@ -485,6 +485,7 @@
         </div>
     </footer>
 
+    <script src="api-config.js"></script>
     <!-- Lógica Interactiva 100% Vanilla JS (Sin Bootstrap JS) -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -621,14 +622,25 @@
             }
 
             async function sendAuthRequest(endpoint, body) {
-                const response = await fetch(endpoint, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(body)
-                });
-                const result = await response.json().catch(() => ({}));
+                const apiBase = typeof window.ONYX_API_URL === "string"
+                    ? window.ONYX_API_URL.trim().replace(/\/$/, "")
+                    : "";
+                if (window.location.hostname.endsWith("github.io") && !apiBase) {
+                    throw new Error("Configura la URL del Worker en api-config.js para activar las cuentas en GitHub Pages.");
+                }
+                let response;
+                try {
+                    response = await fetch(`${apiBase}${endpoint}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(body)
+                    });
+                } catch {
+                    throw new Error("No se puede contactar al servidor de cuentas. El sitio debe publicarse en un hosting compatible con Node.js.");
+                }
+                const result = await response.json().catch(() => null);
                 if (!response.ok || !result.ok) {
-                    throw new Error(result.message || "No se pudo completar la solicitud.");
+                    throw new Error(result?.message || "El servidor de cuentas no está disponible. Verifica que Node.js esté ejecutando Backend/server.js.");
                 }
                 return result;
             }
