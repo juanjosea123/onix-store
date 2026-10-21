@@ -1,25 +1,27 @@
 'use strict';
 
 /**
- * API de cuentas de Mystique One sin dependencias externas.
+ * API de cuentas de Mystique One integrada con Supabase.
  * Ejecuta: node server.js
  */
 const http = require('node:http');
 const crypto = require('node:crypto');
 const fs = require('node:fs/promises');
 const path = require('node:path');
+const { createClient } = require('@supabase/supabase-js');
 
 const HOST = '127.0.0.1';
 const PORT = Number(process.env.PORT || 8000);
-const DATA_FILE = process.env.USERS_FILE || path.join(__dirname, 'data', 'users.json');
 const FRONTEND_DIR = path.resolve(__dirname, '..');
 const MAX_BODY_BYTES = 16 * 1024;
 const SCRYPT_KEY_LENGTH = 64;
 const SCRYPT_OPTIONS = { N: 2 ** 15, r: 8, p: 1, maxmem: 64 * 1024 * 1024 };
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Las escrituras se encadenan para no perder registros con solicitudes simultáneas.
-let storageQueue = Promise.resolve();
+// Configuración de Supabase (asegúrate de definir estas variables de entorno o reemplazarlas)
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://olklsdzxlugrgxlelrgt.supabase.co';
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'sb_publishable_6_bvuF40nccO62w1Lm6t4w_-8LvIRki';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 class ValidationError extends Error {}
 
@@ -36,35 +38,12 @@ const CONTENT_TYPES = {
   '.webp': 'image/webp',
 };
 
-function nowIso() {
-  return new Date().toISOString();
-}
-
 function publicUser(user) {
-  return { id: user.id, fullName: user.fullName, email: user.email };
-}
-
-async function readUsers() {
-  try {
-    const content = await fs.readFile(DATA_FILE, 'utf8');
-    const data = JSON.parse(content);
-    if (!Array.isArray(data.users)) throw new Error('Formato inválido');
-    return data.users;
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      await writeUsers([]);
-      return [];
-    }
-    if (error instanceof SyntaxError) throw new Error('El archivo de usuarios no contiene JSON válido.');
-    throw error;
-  }
-}
-
-async function writeUsers(users) {
-  await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-  const temporaryFile = `${DATA_FILE}.tmp`;
-  await fs.writeFile(temporaryFile, `${JSON.stringify({ users }, null, 2)}\n`, 'utf8');
-  await fs.rename(temporaryFile, DATA_FILE);
+  return { 
+    id: user.id, 
+    fullName: user.nombre_completo || user.fullName, 
+    email: user.email 
+  };
 }
 
 function scrypt(password, salt) {
@@ -79,16 +58,17 @@ function scrypt(password, salt) {
 async function hashPassword(password) {
   const salt = crypto.randomBytes(16);
   const passwordHash = await scrypt(password, salt);
-  return {
+  return JSON.stringify({
     algorithm: 'scrypt',
     parameters: { N: SCRYPT_OPTIONS.N, r: SCRYPT_OPTIONS.r, p: SCRYPT_OPTIONS.p, keyLength: SCRYPT_KEY_LENGTH },
     salt: salt.toString('base64'),
     hash: passwordHash.toString('base64'),
-  };
+  });
 }
 
-async function verifyPassword(password, passwordData) {
+async function verifyPassword(password, passwordDataJson) {
   try {
+    const passwordData = typeof passwordDataJson === 'string' ? JSON.parse(passwordDataJson) : passwordDataJson;
     if (!passwordData || passwordData.algorithm !== 'scrypt') return false;
     const { N, r, p, keyLength } = passwordData.parameters || {};
     if (![N, r, p, keyLength].every(Number.isSafeInteger)) return false;
@@ -117,7 +97,6 @@ function requiredText(payload, field, maximum) {
 function validateRegistration(payload) {
   const fullName = requiredText(payload, 'fullName', 120);
   const email = requiredText(payload, 'email', 190).toLowerCase();
-  // No se elimina espacio al inicio/final de la contraseña: cada carácter cuenta.
   const password = String(payload.password ?? '');
   if (!EMAIL_PATTERN.test(email)) throw new ValidationError('El correo no tiene un formato válido.');
   if (password.length < 10) throw new ValidationError('La contraseña debe tener al menos 10 caracteres.');
@@ -125,40 +104,65 @@ function validateRegistration(payload) {
   return { fullName, email, password };
 }
 
-function inStorage(operation) {
-  const result = storageQueue.then(operation, operation);
-  storageQueue = result.then(() => undefined, () => undefined);
-  return result;
-}
+async function registerUser(payload) {
+  const { fullName, email, password } = validateRegistration(payload);
 
-function registerUser(payload) {
-  return inStorage(async () => {
-    const { fullName, email, password } = validateRegistration(payload);
-    const users = await readUsers();
-    if (users.some((user) => user.email === email)) {
-      throw new ValidationError('Ya existe una cuenta con ese correo.');
-    }
-    const user = {
-      id: crypto.randomUUID(),
-      fullName,
-      email,
-      password: await hashPassword(password),
-      createdAt: nowIso(),
-    };
-    users.push(user);
-    await writeUsers(users);
-    return publicUser(user);
-  });
+  // Verificar si ya existe el correo en la tabla 'Emprendedores'
+  const { data: existingUsers, error: searchError } = await supabase
+    .from('Emprendedores')
+    .select('email')
+    .eq('email', email);
+
+  if (searchError) {
+    throw new Error('Error al consultar la base de datos.');
+  }
+
+  if (existingUsers && existingUsers.length > 0) {
+    throw new ValidationError('Ya existe una cuenta con ese correo.');
+  }
+
+  const hashedPassword = await hashPassword(password);
+
+  // Insertar en Supabase mapeando a las columnas de la tabla: nombre_completo, email, pass
+  const { data, error } = await supabase
+    .from('Emprendedores')
+    .insert([
+      { 
+        nombre_completo: fullName, 
+        email: email, 
+        pass: hashedPassword 
+      }
+    ])
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(`No se pudo registrar el usuario en Supabase: ${error.message}`);
+  }
+
+  return publicUser(data);
 }
 
 async function loginUser(payload) {
   const email = requiredText(payload, 'email', 190).toLowerCase();
   const password = String(payload.password ?? '');
-  const users = await storageQueue.then(readUsers);
-  const user = users.find((item) => item.email === email);
-  if (!user || !(await verifyPassword(password, user.password))) {
+
+  // Buscar el usuario por correo en Supabase
+  const { data: user, error } = await supabase
+    .from('Emprendedores')
+    .select('*')
+    .eq('email', email)
+    .single();
+
+  if (error || !user) {
     throw new ValidationError('Correo o contraseña incorrectos.');
   }
+
+  const isValid = await verifyPassword(password, user.pass);
+  if (!isValid) {
+    throw new ValidationError('Correo o contraseña incorrectos.');
+  }
+
   return publicUser(user);
 }
 
@@ -167,7 +171,7 @@ function sendJson(response, status, body) {
   response.writeHead(status, {
     'Content-Type': 'application/json; charset=utf-8',
     'Content-Length': encoded.length,
-    'Access-Control-Allow-Origin': '*', // En producción, reemplazar por el dominio del frontend.
+    'Access-Control-Allow-Origin': '*',
     'X-Content-Type-Options': 'nosniff',
   });
   response.end(encoded);
@@ -236,7 +240,7 @@ function readJson(request) {
 
 async function handler(request, response) {
   if (request.method === 'OPTIONS') {
-    response.writeHead(204, {
+    response.writeHead(24, {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
@@ -245,7 +249,7 @@ async function handler(request, response) {
     return;
   }
   if (request.method === 'GET' && request.url === '/api/health') {
-    sendJson(response, 200, { ok: true, service: 'mystique-accounts-node' });
+    sendJson(response, 200, { ok: true, service: 'mystique-accounts-supabase' });
     return;
   }
   if (request.method === 'GET') {
@@ -283,4 +287,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { createServer, hashPassword, verifyPassword, registerUser, loginUser, DATA_FILE };
+module.exports = { createServer, hashPassword, verifyPassword, registerUser, loginUser };

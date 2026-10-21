@@ -1,7 +1,0 @@
-name = "onyx-accounts"
-main = "src/worker.js"
-compatibility_date = "2026-10-19"
-
-[[kv_namespaces]]
-binding = "USERS"
-id = "REEMPLAZA_CON_EL_ID_DE_TU_KV"
