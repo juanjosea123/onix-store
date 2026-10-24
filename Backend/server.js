@@ -10,7 +10,6 @@ app.use(express.json());
 
 // Configuración de Supabase con las credenciales provistas
 const supabaseUrl = process.env.SUPABASE_URL || 'https://olklsdzxlugrgxlelrgt.supabase.co';
-const supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || 'sb_secret_6F0uewzMywj3NeRF1eId_g_DP-gbFsg';
 const supabaseJwksUrl = process.env.SUPABASE_JWKS_URL || 'https://olklsdzxlugrgxlelrgt.supabase.co/auth/v1/.well-known/jwks.json';
 
 // Inicializar el cliente de Supabase
