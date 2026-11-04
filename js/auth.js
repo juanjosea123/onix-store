@@ -30,16 +30,3 @@ if (formulario){
         formulario.reset()
     })
 }
-
-/*async function getUsers() {
-    const { data, error } = await supabase.from('users').select('*')
-
-    if (error){
-        console.error(error)
-        return
-    }
-
-    console.log(data)
-}
-
-getUsers()*/
