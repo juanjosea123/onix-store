@@ -1,13 +1,13 @@
 import { supabase } from './supabase.js'
 
-const formulario = document.getElementById('registroForm')
+const formulario = document.getElementById('registerPanel')
 
 if (formulario){
     formulario.addEventListener('submit', async (event) => {
         event.preventDefault()
-        const nombre = document.getElementById('nombre').value
-        const email = document.getElementById('email').value
-        const password = document.getElementById('password').value
+        const nombre = document.getElementById('registerName').value
+        const email = document.getElementById('registerEmail').value
+        const password = document.getElementById('registerPassword').value
 
         const { data, error } = await supabase.auth.signUp({
             email: email,
@@ -19,7 +19,7 @@ if (formulario){
                 emailRedirectTo: window.location.origin + window.location.pathname
             }
         })
-        const mensaje = document.getElementById('mensaje')
+        const mensaje = document.getElementById('authMessage')
         if (error) {
             mensaje.textContent = error.message
             mensaje.style.color = 'red'
